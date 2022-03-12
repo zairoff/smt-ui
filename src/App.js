@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import NavBar from "./components/navbar";
+import { Route, Redirect, Routes } from "react-router-dom";
+import ProductForm from "./components/forms/productForm";
+import Model from "./components/forms/model";
+import BrandForm from "./components/forms/brandForm";
+import ProductBrandForm from "./components/forms/productBrandForm";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <NavBar />
+      <main className="container">
+        <Routes>
+          <Route path="/product" element={<ProductForm />} />
+          <Route path="/brand" element={<BrandForm />} />
+          <Route path="/productBrand" element={<ProductBrandForm />} />
+          <Route path="/model" element={<Model />} />
+        </Routes>
+      </main>
+    </React.Fragment>
   );
 }
 
