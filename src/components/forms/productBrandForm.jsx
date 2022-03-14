@@ -8,7 +8,7 @@ import Form from "./form";
 class ProductBrandForm extends Form {
   state = {
     currentPage: 1,
-    sortColumn: { column: "", order: "asc" },
+    sortColumn: { path: "", order: "asc" },
     pageSize: 4,
     data: [
       {
@@ -52,18 +52,12 @@ class ProductBrandForm extends Form {
   };
 
   render() {
-    const {
-      columns,
-      data: allData,
-      pageSize,
-      currentPage,
-      sortColumn,
-    } = this.state;
+    const { data: allData, pageSize, currentPage, sortColumn } = this.state;
 
     const itemsCount = allData.length;
     const sortedData = _.orderBy(
       allData,
-      [sortColumn.column],
+      [sortColumn.path],
       [sortColumn.order]
     );
     const data = paginate(sortedData, currentPage, pageSize);
@@ -73,7 +67,6 @@ class ProductBrandForm extends Form {
         <div className="col mt-4">
           <ProductBrandTable
             data={data}
-            columns={columns}
             sortColumn={sortColumn}
             onDelete={this.handleDelete}
             onSort={this.handleSort}

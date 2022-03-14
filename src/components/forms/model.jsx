@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faSortAsc } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faSortAsc);
 
 const Model = () => {
-  return <h1>Model</h1>;
+  return <FontAwesomeIcon icon={faSortAsc}></FontAwesomeIcon>;
 };
 
 export default Model;

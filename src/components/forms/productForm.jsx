@@ -1,29 +1,38 @@
 import React, { Component } from "react";
-import ListGroup from "../common/listGroup";
+import ProductTable from "../productTable";
 import Form from "./form";
 
 class ProductForm extends Form {
   state = {
-    items: [
-      { id: 1, name: "TV" },
-      { id: 2, name: "Air" },
-      { id: 3, name: "Washing" },
-    ], // temp
-    listSelectedItem: null, // temp
+    sortColumn: { path: "", order: "asc" },
+    rows: [
+      {
+        id: 1,
+        product: "TV",
+      },
+      {
+        id: 4,
+        product: "Air",
+      },
+      {
+        id: 5,
+        product: "Washing",
+      },
+    ],
   };
 
-  handleListSelect = () => {
-    console.log("listChange: ", this);
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
   };
 
   render() {
     return (
       <form className="container m-2 row">
         <div className="col mt-4">
-          <ListGroup
-            items={this.state.items}
-            onItemSelect={this.handleListSelect}
-            selectedItem={this.state.listSelectedItem}
+          <ProductTable
+            rows={this.state.rows}
+            onSort={this.handleSort}
+            sortColumn={this.state.sortColumn}
           />
         </div>
         <div className="col">
