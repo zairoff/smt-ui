@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Table from "./common/table";
+import Table from "../common/table";
 
-class ProductTable extends Component {
+class BrandTable extends Component {
   columns = [
     { path: "id", label: "ID" },
-    { path: "product", label: "PRODUCT" },
+    { path: "brand", label: "BRAND" },
     {
       path: "button",
       content: (product) => (
@@ -30,4 +30,4 @@ class ProductTable extends Component {
   }
 }
 
-export default ProductTable;
+export default BrandTable;

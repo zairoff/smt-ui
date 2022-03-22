@@ -1,8 +1,8 @@
 import _ from "lodash";
-import React, { Component } from "react";
+import React from "react";
 import { paginate } from "../../utils/paginate";
 import Pagination from "../common/pagination";
-import ProductBrandTable from "../productBrandTable";
+import ProductBrandTable from "../tables/productBrandTable";
 import Form from "./form";
 
 class ProductBrandForm extends Form {
@@ -10,7 +10,15 @@ class ProductBrandForm extends Form {
     currentPage: 1,
     sortColumn: { path: "", order: "asc" },
     pageSize: 4,
-    data: [
+    products: [
+      { id: 1, product: "TV" },
+      { id: 2, product: "Air" },
+    ],
+    brands: [
+      { id: 1, brand: "Artel" },
+      { id: 2, brand: "TCL" },
+    ],
+    rows: [
       {
         id: 1,
         product: "TV",
@@ -52,7 +60,14 @@ class ProductBrandForm extends Form {
   };
 
   render() {
-    const { data: allData, pageSize, currentPage, sortColumn } = this.state;
+    const {
+      rows: allData,
+      pageSize,
+      currentPage,
+      sortColumn,
+      products,
+      brands,
+    } = this.state;
 
     const itemsCount = allData.length;
     const sortedData = _.orderBy(
@@ -60,13 +75,14 @@ class ProductBrandForm extends Form {
       [sortColumn.path],
       [sortColumn.order]
     );
+
     const data = paginate(sortedData, currentPage, pageSize);
 
     return (
       <form className="container m-2 row">
         <div className="col mt-4">
           <ProductBrandTable
-            data={data}
+            rows={data}
             sortColumn={sortColumn}
             onDelete={this.handleDelete}
             onSort={this.handleSort}
@@ -78,8 +94,10 @@ class ProductBrandForm extends Form {
             onPageChange={this.handlePageChange}
           />
         </div>
-        <div className="col ms-4">
-          {this.renderInput("")}
+        <div className="col m-5">
+          {this.renderSelect("Product", products)}
+          <p className="mt-2"> </p>
+          {this.renderSelect("Brand", brands)}
           <p className="mt-2"> </p>
           {this.renderButton("Save")}
         </div>

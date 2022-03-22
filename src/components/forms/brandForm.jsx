@@ -1,32 +1,71 @@
 import React, { Component } from "react";
-import ListGroup from "../common/listGroup";
+import BrandTable from "../tables/brandTable";
+import Pagination from "../common/pagination";
+import { paginate } from "../../utils/paginate";
+import _ from "lodash";
 import Form from "./form";
 
 class BrandForm extends Form {
   state = {
-    items: [
-      { id: 1, name: "Artel" },
-      { id: 2, name: "TCL" },
-      { id: 3, name: "Cultraview" },
-    ], // temp
-    listSelectedItem: null, // temp
+    sortColumn: { path: "", order: "asc" },
+    currentPage: 1,
+    pageSize: 4,
+    rows: [
+      {
+        id: 1,
+        brand: "Artel",
+      },
+      {
+        id: 2,
+        brand: "Samsung",
+      },
+      {
+        id: 3,
+        brand: "TCL",
+      },
+      {
+        id: 4,
+        brand: "Cultraview",
+      },
+      {
+        id: 5,
+        brand: "Wire Pool ",
+      },
+    ],
   };
 
-  handleListSelect = () => {
-    console.log("listChange: ", this);
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
   };
 
   render() {
+    const { rows: allRows, pageSize, currentPage, sortColumn } = this.state;
+    const sortedRows = _.orderBy(
+      allRows,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
+    const rows = paginate(sortedRows, currentPage, pageSize);
     return (
       <form className="container m-2 row">
         <div className="col mt-4">
-          <ListGroup
-            items={this.state.items}
-            onItemSelect={this.handleListSelect}
-            selectedItem={this.state.listSelectedItem}
+          <BrandTable
+            rows={rows}
+            onSort={this.handleSort}
+            sortColumn={sortColumn}
+          />
+          <Pagination
+            itemsCount={allRows.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
           />
         </div>
-        <div className="col">
+        <div className="col ms-4">
           {this.renderInput("")}
           <p className="mt-2"> </p>
           {this.renderButton("Save")}

@@ -5,8 +5,8 @@ import { faSortAsc } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faSortAsc);
 
-const Model = () => {
+const ModelForm = () => {
   return <FontAwesomeIcon icon={faSortAsc}></FontAwesomeIcon>;
 };
 
-export default Model;
+export default ModelForm;

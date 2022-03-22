@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import TableBody from "./common/tableBody";
-import TableHeader from "./common/tableHeader";
+import Table from "../common/table";
 
 class ProductBrandTable extends Component {
   columns = [
@@ -20,16 +19,14 @@ class ProductBrandTable extends Component {
     },
   ];
   render() {
-    const { data, sortColumn, onSort } = this.props;
+    const { rows, sortColumn, onSort } = this.props;
     return (
-      <table className="table">
-        <TableHeader
-          columns={this.columns}
-          sortColumn={sortColumn}
-          onSort={onSort}
-        />
-        <TableBody columns={this.columns} rows={data} />
-      </table>
+      <Table
+        columns={this.columns}
+        rows={rows}
+        sortColumn={sortColumn}
+        onSort={onSort}
+      />
     );
   }
 }
