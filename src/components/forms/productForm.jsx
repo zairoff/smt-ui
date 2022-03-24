@@ -41,9 +41,7 @@ class ProductForm extends Form {
     const obj = { name: product };
     try {
       const { data: result } = await addProduct(obj);
-      console.log("data:", result);
       const newData = [...data, result];
-      console.log("newData:", newData);
       this.setState({ data: newData, product: "" });
     } catch (ex) {
       toast(ex.message);
@@ -57,6 +55,10 @@ class ProductForm extends Form {
     this.setState({ product: value, errors });
   };
 
+  handleDelete = (product) => {
+    console.log("delete:", product);
+  };
+
   render() {
     const {
       data: allRows,
@@ -66,8 +68,7 @@ class ProductForm extends Form {
       product,
       errors,
     } = this.state;
-    console.log("allrows:", allRows);
-    console.log("allrowsL:", allRows.length);
+
     const sortedRows = _.orderBy(
       allRows,
       [sortColumn.path],
@@ -81,6 +82,7 @@ class ProductForm extends Form {
             rows={rows}
             onSort={this.handleSort}
             sortColumn={sortColumn}
+            onDelete={this.handleDelete}
           />
           <Pagination
             itemsCount={allRows.length}
@@ -89,7 +91,8 @@ class ProductForm extends Form {
             onPageChange={this.handlePaginationChange}
           />
         </div>
-        <div className="col">
+        <div className="col m-5">
+          <p className="mt-2"> </p>
           {this.renderInput("product", product, this.handleInputChange, errors)}
           <p className="mt-2"> </p>
           {this.renderButton("Save", errors)}

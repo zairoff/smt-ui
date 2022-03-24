@@ -9,7 +9,6 @@ const Input = ({ name, value, onChange, error, type }) => {
         id={name}
         type={type}
         className="form-control form-control-lg"
-        placeholder={name}
       ></input>
       {error && <div className="alert alert-danger p-2">{error}</div>}
     </div>
