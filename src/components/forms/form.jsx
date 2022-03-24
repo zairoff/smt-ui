@@ -3,11 +3,20 @@ import Input from "../common/input";
 import Select from "../common/select";
 
 class Form extends Component {
-  state = {};
+  validateInput(input, data) {
+    let errors = "";
+    if (!input) errors = "Input can't be empty";
+    if (data) errors = input + " already exists in database";
 
-  renderButton(label) {
+    return errors;
+  }
+
+  renderButton(label, error) {
     return (
-      <button className="btn btn-primary btn-block btn-lg w-100">
+      <button
+        disabled={error}
+        className="btn btn-primary btn-block btn-lg w-100"
+      >
         {label}
       </button>
     );

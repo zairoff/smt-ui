@@ -4,7 +4,7 @@ import Table from "../common/table";
 class ProductTable extends Component {
   columns = [
     { path: "id", label: "ID" },
-    { path: "product", label: "PRODUCT" },
+    { path: "name", label: "PRODUCT" },
     {
       path: "button",
       content: (product) => (

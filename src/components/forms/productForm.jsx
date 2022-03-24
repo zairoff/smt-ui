@@ -4,50 +4,70 @@ import ProductTable from "../tables/productTable";
 import { paginate } from "../../utils/paginate";
 import Form from "./form";
 import _ from "lodash";
+import {
+  getProducts,
+  deleteProduct,
+  getProductByName,
+  addProduct,
+} from "../../services/productService";
+import { toast } from "react-toastify";
 
 class ProductForm extends Form {
   state = {
     sortColumn: { path: "", order: "asc" },
+    product: "",
     currentPage: 1,
-    pageSize: 4,
-    rows: [
-      {
-        id: 1,
-        product: "TV",
-      },
-      {
-        id: 2,
-        product: "Air",
-      },
-      {
-        id: 3,
-        product: "Washing",
-      },
-      {
-        id: 4,
-        product: "Washing",
-      },
-      {
-        id: 5,
-        product: "Washing",
-      },
-    ],
+    pageSize: 7,
+    data: [],
   };
+
+  async componentDidMount() {
+    const { data } = await getProducts();
+    this.setState({ data });
+  }
 
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
 
-  handlePageChange = (page) => {
+  handlePaginationChange = (page) => {
     this.setState({ currentPage: page });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
+
+    const { data, product } = this.state;
+    const obj = { name: product };
+    try {
+      const { data: result } = await addProduct(obj);
+      console.log("data:", result);
+      const newData = [...data, result];
+      console.log("newData:", newData);
+      this.setState({ data: newData, product: "" });
+    } catch (ex) {
+      toast(ex.message);
+    }
+  };
+
+  handleInputChange = async ({ currentTarget: input }) => {
+    const { value } = input;
+    const { data } = await getProductByName(value);
+    const errors = this.validateInput(value, data);
+    this.setState({ product: value, errors });
   };
 
   render() {
-    const { rows: allRows, pageSize, currentPage, sortColumn } = this.state;
+    const {
+      data: allRows,
+      pageSize,
+      currentPage,
+      sortColumn,
+      product,
+      errors,
+    } = this.state;
+    console.log("allrows:", allRows);
+    console.log("allrowsL:", allRows.length);
     const sortedRows = _.orderBy(
       allRows,
       [sortColumn.path],
@@ -66,13 +86,13 @@ class ProductForm extends Form {
             itemsCount={allRows.length}
             pageSize={pageSize}
             currentPage={currentPage}
-            onPageChange={this.handlePageChange}
+            onPageChange={this.handlePaginationChange}
           />
         </div>
         <div className="col">
-          {this.renderInput("")}
+          {this.renderInput("product", product, this.handleInputChange, errors)}
           <p className="mt-2"> </p>
-          {this.renderButton("Save")}
+          {this.renderButton("Save", errors)}
         </div>
       </form>
     );

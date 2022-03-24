@@ -6,11 +6,14 @@ import ModelForm from "./components/forms/modelForm";
 import BrandForm from "./components/forms/brandForm";
 import ProductBrandForm from "./components/forms/productBrandForm";
 import Login from "./components/forms/login";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <React.Fragment>
       <NavBar />
+      <ToastContainer />
       <main className="container">
         <Routes>
           <Route path="/product" element={<ProductForm />} />

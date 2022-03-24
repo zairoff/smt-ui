@@ -4,6 +4,7 @@ import Pagination from "../common/pagination";
 import { paginate } from "../../utils/paginate";
 import _ from "lodash";
 import Form from "./form";
+import { toast } from "react-toastify";
 
 class BrandForm extends Form {
   state = {
