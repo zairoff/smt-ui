@@ -4,7 +4,7 @@ import http from "./httpService";
 const endPoint = config.apiUrl + "product";
 
 function productUrl(id) {
-  return `${endPoint}/${id}}`;
+  return `${endPoint}/${id}`;
 }
 
 export function getProducts() {
@@ -29,5 +29,7 @@ export function updateProduct(id, product) {
 }
 
 export function deleteProduct(id) {
+  var url = productUrl(id);
+  console.log(url);
   return http.delete(productUrl(id));
 }

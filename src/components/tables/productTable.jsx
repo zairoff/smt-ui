@@ -9,6 +9,7 @@ class ProductTable extends Component {
       path: "button",
       content: (product) => (
         <button
+          type="button"
           onClick={() => this.props.onDelete(product)}
           className="btn btn-danger"
         >

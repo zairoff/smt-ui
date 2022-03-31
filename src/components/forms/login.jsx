@@ -49,6 +49,11 @@ class Login extends Form {
             this.handleChange,
             errors.password
           )}
+          {this.renderLink(
+            "forgot password?",
+            "/reset",
+            "d-flex justify-content-end"
+          )}
           <p className="mt-2"> </p>
           {this.renderButton("Login")}
         </form>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Input from "../common/input";
 import Select from "../common/select";
 
@@ -15,10 +16,19 @@ class Form extends Component {
     return (
       <button
         disabled={error}
+        type="submit"
         className="btn btn-primary btn-block btn-lg w-100"
       >
         {label}
       </button>
+    );
+  }
+
+  renderLink(label, link, className) {
+    return (
+      <Link className={className} to={link}>
+        {label}
+      </Link>
     );
   }
 

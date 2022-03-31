@@ -39,6 +39,7 @@ class ProductForm extends Form {
 
     const { data, product } = this.state;
     const obj = { name: product };
+
     try {
       const { data: result } = await addProduct(obj);
       const newData = [...data, result];
@@ -55,8 +56,17 @@ class ProductForm extends Form {
     this.setState({ product: value, errors });
   };
 
-  handleDelete = (product) => {
-    console.log("delete:", product);
+  handleDelete = async ({ id }) => {
+    const clone = [...this.state.data];
+    const data = clone.filter((d) => d.id !== id);
+    this.setState({ data });
+
+    try {
+      await deleteProduct(id);
+    } catch (ex) {
+      this.setState({ data: clone });
+      toast(ex.message);
+    }
   };
 
   render() {
