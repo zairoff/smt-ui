@@ -69,6 +69,9 @@ const NavBar = () => {
           </ul>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
+              <Link to="/register" className="nav-link">
+                Register
+              </Link>
               <Link to="/login" className="nav-link">
                 Login
               </Link>

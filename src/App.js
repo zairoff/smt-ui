@@ -8,6 +8,7 @@ import ProductBrandForm from "./components/forms/productBrandForm";
 import Login from "./components/forms/login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Register from "./components/forms/register";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/productBrand" element={<ProductBrandForm />} />
           <Route path="/model" element={<ModelForm />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </main>
     </React.Fragment>
