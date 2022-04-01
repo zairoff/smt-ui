@@ -4,13 +4,28 @@ import Input from "../common/input";
 import Select from "../common/select";
 
 class Form extends Component {
-  validateInput(input, data) {
-    let errors = "";
-    if (!input) errors = "Input can't be empty";
-    if (data) errors = input + " already exists in database";
+  state = { data: {}, errors: {} };
 
-    return errors;
-  }
+  handleInputChange = async ({ currentTarget: input }) => {
+    const { value } = input;
+
+    const errors = { ...this.state.errors };
+    const error = await this.validateInput(input);
+
+    if (error) errors[input.id] = error;
+    else delete errors[input.id];
+
+    const data = { ...this.state.data };
+    data.account[input.id] = value;
+
+    this.setState({ data, errors, loading: false });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    this.doSubmit();
+  };
 
   renderButton(label, error) {
     return (
@@ -32,13 +47,25 @@ class Form extends Component {
     );
   }
 
-  renderInput(name, value, onChange, error, type = "text") {
+  renderInput(
+    name,
+    label,
+    placeholder,
+    value,
+    onChange,
+    error,
+    required,
+    type = "text"
+  ) {
     return (
       <Input
         name={name}
+        label={label}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         error={error}
+        required={required}
         type={type}
       />
     );

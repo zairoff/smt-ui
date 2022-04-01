@@ -29,7 +29,5 @@ export function updateProduct(id, product) {
 }
 
 export function deleteProduct(id) {
-  var url = productUrl(id);
-  console.log(url);
   return http.delete(productUrl(id));
 }

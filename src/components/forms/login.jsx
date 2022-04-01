@@ -5,24 +5,8 @@ import Form from "./form";
 class Login extends Form {
   state = { account: { username: "", password: "" }, errors: {} };
 
-  validate = () => {
-    const errors = {};
-
-    const { account } = this.state;
-    if (account.username.trim() === "")
-      errors.username = "username is required";
-    if (account.password.trim() === "")
-      errors.password = "password is requiered";
-
-    return Object.keys(errors).length === 0 ? null : errors;
-  };
-
   handleSubmit = (e) => {
     e.preventDefault();
-
-    const errors = this.validate();
-    console.log(errors);
-    this.setState({ errors: errors || {} });
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -40,14 +24,16 @@ class Login extends Form {
             "username",
             account.username,
             this.handleChange,
-            errors.username
+            errors.username,
+            true
           )}
           <p className="mt-2"> </p>
           {this.renderInput(
             "password",
             account.password,
             this.handleChange,
-            errors.password
+            errors.password,
+            true
           )}
           {this.renderLink(
             "forgot password?",

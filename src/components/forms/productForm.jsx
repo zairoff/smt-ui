@@ -11,6 +11,7 @@ import {
   addProduct,
 } from "../../services/productService";
 import { toast } from "react-toastify";
+import { cat } from "fontawesome";
 
 class ProductForm extends Form {
   state = {
@@ -19,11 +20,16 @@ class ProductForm extends Form {
     currentPage: 1,
     pageSize: 7,
     data: [],
+    errors: "",
   };
 
   async componentDidMount() {
-    const { data } = await getProducts();
-    this.setState({ data });
+    try {
+      const { data } = await getProducts();
+      this.setState({ data });
+    } catch (ex) {
+      toast(ex.message);
+    }
   }
 
   handleSort = (sortColumn) => {
@@ -34,11 +40,15 @@ class ProductForm extends Form {
     this.setState({ currentPage: page });
   };
 
-  handleSubmit = async (event) => {
-    event.preventDefault();
-
+  doSubmit = async () => {
     const { data, product } = this.state;
     const obj = { name: product };
+
+    // TODO: need to change
+    if (!product) {
+      toast("Fill the input");
+      return;
+    }
 
     try {
       const { data: result } = await addProduct(obj);
@@ -49,11 +59,23 @@ class ProductForm extends Form {
     }
   };
 
+  validateInput(value, response) {
+    let error = "";
+    if (!value) error = "can't be empty";
+    if (response) error = "already exists in database";
+
+    return error;
+  }
+
   handleInputChange = async ({ currentTarget: input }) => {
     const { value } = input;
-    const { data } = await getProductByName(value);
-    const errors = this.validateInput(value, data);
-    this.setState({ product: value, errors });
+    try {
+      const { data } = await getProductByName(value);
+      const errors = this.validateInput(value, data);
+      this.setState({ product: value, errors });
+    } catch (ex) {
+      toast(ex.message);
+    }
   };
 
   handleDelete = async ({ id }) => {
