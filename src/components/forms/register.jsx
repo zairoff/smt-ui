@@ -1,50 +1,33 @@
-import { cat } from "fontawesome";
 import React, { Component } from "react";
-import { toast } from "react-toastify";
-import { getUserByName, registerUser } from "../../services/userService";
+import {
+  getUserByName,
+  loginUser,
+  registerUser,
+} from "../../services/userService";
 import ReactLoading from "react-loading";
 import Form from "./form";
 
 class Register extends Form {
   state = {
-    data: {
-      account: { username: "", password: "", passwordRepeat: "", telegram: "" },
-      loading: false,
-    },
+    data: { username: "", password: "", passwordRepeat: "", telegram: "" },
     errors: {},
+    loading: false,
   };
-
-  componentDidMount() {
-    console.log("mount");
-  }
-
-  componentDidUpdate() {
-    {
-      0 && <ReactLoading className="test" type="balls" color="green" />;
-    }
-  }
-
-  componentWillUnmount() {
-    console.log("componentWillUnmount");
-  }
 
   // TODO: need to find other ways
   async validateInput(input) {
+    const { data } = this.state;
     this.setState({ loading: true });
-    const { account } = this.state.data;
     const { id, value } = input;
     let error = "";
     switch (id) {
       case "username":
         try {
           if (!value) break;
-          const { data } = await getUserByName(value);
-          error = data ? "username already exist" : "";
+          const { data: user } = await getUserByName(value);
+          error = user ? "username already exist" : "";
         } catch (ex) {
-          if (ex.response.status !== 404) {
-            error = ex.message;
-            toast(ex.message);
-          }
+          console.log("user", ex.response.data);
         } finally {
           break;
         }
@@ -54,7 +37,7 @@ class Register extends Form {
         break;
 
       case "passwordRepeat":
-        error = account.password !== value ? "password doesn't match" : "";
+        error = data.password !== value ? "password doesn't match" : "";
         break;
 
       default:
@@ -64,57 +47,64 @@ class Register extends Form {
   }
 
   doSubmit = async () => {
+    this.setState({ loading: true });
     try {
-      console.log("aa", this.state.data.account);
-      const { data } = await registerUser(this.state.data.account);
-      console.log("data: ", data);
+      await registerUser(this.state.data);
+      const { username, password } = this.state.data;
+      const user = { username: username, password: password };
+      const { data } = await loginUser(user);
+      localStorage.setItem("token", data.token);
+      window.location = "/";
     } catch (ex) {
-      toast(ex.message);
+      this.catchExceptionMessage(ex);
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
   render() {
     const { data, errors, loading } = this.state;
-    const { account, roles } = data;
 
     return (
-      <div className="d-flex justify-content-center align-items-center p-4">
+      <React.Fragment>
         {loading && <ReactLoading className="test" type="spin" color="blue" />}
-        <form onSubmit={this.handleSubmit}>
-          <p className="mt-2"> </p>
-          {this.renderInput(
-            "username",
-            "Username",
-            "", // placeholder
-            account.username,
-            this.handleInputChange,
-            errors.username,
-            true
-          )}
-          <p className="mt-2"> </p>
-          {this.renderInput(
-            "password",
-            "Password",
-            "", // placeholder
-            account.password,
-            this.handleInputChange,
-            errors.password,
-            true
-          )}
-          <p className="mt-2"> </p>
-          {this.renderInput(
-            "passwordRepeat",
-            "Confirm password",
-            "", // placeholder
-            account.passwordRepeat,
-            this.handleInputChange,
-            errors.passwordRepeat,
-            true
-          )}
-          <p className="mt-2"> </p>
-          {this.renderButton("Register")}
-        </form>
-      </div>
+        <div className="d-flex justify-content-center align-items-center p-4">
+          <form onSubmit={this.handleSubmit}>
+            <p className="mt-2"> </p>
+            {this.renderInput(
+              "username",
+              "Username",
+              "", // placeholder
+              data.username,
+              this.handleInputChange,
+              errors.username,
+              true
+            )}
+            <p className="mt-2"> </p>
+            {this.renderInput(
+              "password",
+              "Password",
+              "", // placeholder
+              data.password,
+              this.handleInputChange,
+              errors.password,
+              true
+            )}
+            <p className="mt-2"> </p>
+            {this.renderInput(
+              "passwordRepeat",
+              "Confirm password",
+              "", // placeholder
+              data.passwordRepeat,
+              this.handleInputChange,
+              errors.passwordRepeat,
+              true
+            )}
+            <p className="mt-2"> </p>
+            {this.renderButton("Register")}
+          </form>
+        </div>
+      </React.Fragment>
     );
   }
 }

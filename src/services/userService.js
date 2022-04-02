@@ -1,10 +1,10 @@
 import config from "../config.json";
 import http from "./httpService";
 
-const endPoint = config.apiUrl + "User/";
+const endPoint = config.apiUrl + "user/";
 
 export function getUserByName(username) {
-  const query = endPoint.concat("GetByUsername?username=".concat(username));
+  const query = endPoint.concat("getByUsername?username=".concat(username));
   return http.get(query);
 }
 
@@ -20,7 +20,7 @@ export function registerUser(user) {
   });
 }
 
-export function authUser(user) {
+export function loginUser(user) {
   return http.post(endPoint.concat("auth"), user);
 }
 

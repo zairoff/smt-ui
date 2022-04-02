@@ -1,37 +1,56 @@
+import { wait } from "@testing-library/user-event/dist/utils";
 import { values } from "lodash";
 import React, { Component } from "react";
+import { loginUser } from "../../services/userService";
+import ReactLoading from "react-loading";
 import Form from "./form";
 
 class Login extends Form {
-  state = { account: { username: "", password: "" }, errors: {} };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
+  state = {
+    data: { username: "", password: "" },
+    loading: false,
+    errors: {},
   };
+  validateInput(input) {
+    return "";
+  }
 
-  handleChange = ({ currentTarget: input }) => {
-    const account = { ...this.state.account };
-    account[input.id] = input.value;
-    this.setState({ account });
+  doSubmit = async () => {
+    this.setState({ loading: true });
+    const { data: user } = this.state;
+    try {
+      const { data } = await loginUser(user);
+      localStorage.setItem("token", data.token);
+      window.location = "/";
+    } catch (ex) {
+      this.catchExceptionMessage(ex);
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   render() {
-    const { account, errors } = this.state;
+    const { data, errors, loading } = this.state;
     return (
       <div className="d-flex justify-content-center align-items-center p-4">
+        {loading && <ReactLoading className="test" type="spin" color="blue" />}
         <form onSubmit={this.handleSubmit}>
           {this.renderInput(
             "username",
-            account.username,
-            this.handleChange,
+            "Username",
+            "",
+            data.username,
+            this.handleInputChange,
             errors.username,
             true
           )}
           <p className="mt-2"> </p>
           {this.renderInput(
             "password",
-            account.password,
-            this.handleChange,
+            "Password",
+            "",
+            data.password,
+            this.handleInputChange,
             errors.password,
             true
           )}

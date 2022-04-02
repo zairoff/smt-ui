@@ -16,10 +16,18 @@ class Form extends Component {
     else delete errors[input.id];
 
     const data = { ...this.state.data };
-    data.account[input.id] = value;
+    data[input.id] = value;
 
     this.setState({ data, errors, loading: false });
   };
+
+  catchExceptionMessage(ex) {
+    if (ex.response && ex.response.status === 400) {
+      const errors = { ...this.state.errors };
+      errors.username = ex.response.data.message;
+      this.setState({ errors });
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();

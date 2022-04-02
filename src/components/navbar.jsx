@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ user }) => {
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-light">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          Artel
+          {user ? user.username : "Artel"}
         </Link>
         <button
           className="navbar-toggler ms-auto"
@@ -19,19 +19,19 @@ const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link to="/" className="nav-link active" aria-current="page">
+              <NavLink to="/" className="nav-link active" aria-current="page">
                 Dashboard
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link">
+              <NavLink to="/" className="nav-link">
                 Plan
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink to="/" className="nav-link">
                 Report
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item dropdown">
               <a
@@ -45,44 +45,46 @@ const NavBar = () => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <Link to="/product" className="dropdown-item">
+                  <NavLink to="/product" className="dropdown-item">
                     Product
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/brand" className="dropdown-item">
+                  <NavLink to="/brand" className="dropdown-item">
                     Brand
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/productBrand" className="dropdown-item">
+                  <NavLink to="/productBrand" className="dropdown-item">
                     Product-Brand
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/model" className="dropdown-item">
+                  <NavLink to="/model" className="dropdown-item">
                     Model
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </li>
           </ul>
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link to="/register" className="nav-link">
-                Register
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/login" className="nav-link">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/" className="nav-link">
-                Logout
-              </Link>
-            </li>
+            {!user && (
+              <React.Fragment>
+                <NavLink to="/register" className="nav-item nav-link">
+                  Register
+                </NavLink>
+                <NavLink to="/login" className="nav-item nav-link">
+                  Login
+                </NavLink>
+              </React.Fragment>
+            )}
+            {user && (
+              <React.Fragment>
+                <NavLink to="/" className="nav-item nav-link">
+                  Logout
+                </NavLink>
+              </React.Fragment>
+            )}
           </ul>
         </div>
       </div>
