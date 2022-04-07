@@ -1,9 +1,5 @@
-import React, { Component } from "react";
-import {
-  getUserByName,
-  loginUser,
-  registerUser,
-} from "../../services/userService";
+import React from "react";
+import { loginUser, registerUser } from "../../services/userService";
 import ReactLoading from "react-loading";
 import Form from "./form";
 
@@ -13,38 +9,6 @@ class Register extends Form {
     errors: {},
     loading: false,
   };
-
-  // TODO: need to find other ways
-  async validateInput(input) {
-    const { data } = this.state;
-    this.setState({ loading: true });
-    const { id, value } = input;
-    let error = "";
-    switch (id) {
-      case "username":
-        try {
-          if (!value) break;
-          const { data: user } = await getUserByName(value);
-          error = user ? "username already exist" : "";
-        } catch (ex) {
-          console.log("user", ex.response.data);
-        } finally {
-          break;
-        }
-
-      case "password":
-        error = value.length < 5 ? "password length" : "";
-        break;
-
-      case "passwordRepeat":
-        error = data.password !== value ? "password doesn't match" : "";
-        break;
-
-      default:
-        break;
-    }
-    return error;
-  }
 
   doSubmit = async () => {
     this.setState({ loading: true });

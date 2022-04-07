@@ -4,27 +4,23 @@ import Input from "../common/input";
 import Select from "../common/select";
 
 class Form extends Component {
-  state = { data: {}, errors: {} };
+  state = { fields: {}, errors: {} };
 
   handleInputChange = async ({ currentTarget: input }) => {
     const { value } = input;
+    console.log(input);
+    console.log(input.id);
 
-    const errors = { ...this.state.errors };
-    const error = await this.validateInput(input);
+    const fields = { ...this.state.fields };
+    fields[input.id] = value;
 
-    if (error) errors[input.id] = error;
-    else delete errors[input.id];
-
-    const data = { ...this.state.data };
-    data[input.id] = value;
-
-    this.setState({ data, errors, loading: false });
+    this.setState({ fields });
   };
 
   catchExceptionMessage(ex) {
     if (ex.response && ex.response.status === 400) {
       const errors = { ...this.state.errors };
-      errors.username = ex.response.data.message;
+      errors.username = ex.response.fields.message;
       this.setState({ errors });
     }
   }

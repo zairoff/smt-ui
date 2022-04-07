@@ -7,7 +7,7 @@ import Form from "./form";
 
 class Login extends Form {
   state = {
-    data: { username: "", password: "" },
+    fields: { username: "", password: "" },
     loading: false,
     errors: {},
   };
@@ -17,10 +17,10 @@ class Login extends Form {
 
   doSubmit = async () => {
     this.setState({ loading: true });
-    const { data: user } = this.state;
+    const { fields: user } = this.state;
     try {
-      const { data } = await loginUser(user);
-      localStorage.setItem("token", data.token);
+      const { fields } = await loginUser(user);
+      localStorage.setItem("token", fields.token);
       window.location = "/";
     } catch (ex) {
       this.catchExceptionMessage(ex);
@@ -30,7 +30,7 @@ class Login extends Form {
   };
 
   render() {
-    const { data, errors, loading } = this.state;
+    const { fields, errors, loading } = this.state;
     return (
       <div className="d-flex justify-content-center align-items-center p-4">
         {loading && <ReactLoading className="test" type="spin" color="blue" />}
@@ -39,7 +39,7 @@ class Login extends Form {
             "username",
             "Username",
             "",
-            data.username,
+            fields.username,
             this.handleInputChange,
             errors.username,
             true
@@ -49,7 +49,7 @@ class Login extends Form {
             "password",
             "Password",
             "",
-            data.password,
+            fields.password,
             this.handleInputChange,
             errors.password,
             true

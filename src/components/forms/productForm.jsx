@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Pagination from "../common/pagination";
 import ProductTable from "../tables/productTable";
 import { paginate } from "../../utils/paginate";
+import ReactLoading from "react-loading";
 import Form from "./form";
 import _ from "lodash";
 import {
@@ -11,22 +12,22 @@ import {
   addProduct,
 } from "../../services/productService";
 import { toast } from "react-toastify";
-import { cat } from "fontawesome";
 
 class ProductForm extends Form {
   state = {
     sortColumn: { path: "", order: "asc" },
-    product: "",
+    fields: { product: "" },
     currentPage: 1,
     pageSize: 7,
     data: [],
-    errors: "",
+    errors: {},
+    loading: true,
   };
 
   async componentDidMount() {
     try {
       const { data } = await getProducts();
-      this.setState({ data });
+      this.setState({ data, loading: false });
     } catch (ex) {
       toast(ex.message);
     }
@@ -81,13 +82,15 @@ class ProductForm extends Form {
   handleDelete = async ({ id }) => {
     const clone = [...this.state.data];
     const data = clone.filter((d) => d.id !== id);
-    this.setState({ data });
+    this.setState({ data, loading: true });
 
     try {
       await deleteProduct(id);
     } catch (ex) {
       this.setState({ data: clone });
       toast(ex.message);
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
@@ -97,8 +100,9 @@ class ProductForm extends Form {
       pageSize,
       currentPage,
       sortColumn,
-      product,
+      fields,
       errors,
+      loading,
     } = this.state;
 
     const sortedRows = _.orderBy(
@@ -109,6 +113,7 @@ class ProductForm extends Form {
     const rows = paginate(sortedRows, currentPage, pageSize);
     return (
       <form className="container m-2 row" onSubmit={this.handleSubmit}>
+        {loading && <ReactLoading className="test" type="spin" color="blue" />}
         <div className="col mt-4">
           <ProductTable
             rows={rows}
@@ -124,10 +129,17 @@ class ProductForm extends Form {
           />
         </div>
         <div className="col m-5">
+          {this.renderInput(
+            "product",
+            "",
+            "",
+            fields.product,
+            this.handleInputChange,
+            errors.product,
+            true
+          )}
           <p className="mt-2"> </p>
-          {this.renderInput("product", product, this.handleInputChange, errors)}
-          <p className="mt-2"> </p>
-          {this.renderButton("Save", errors)}
+          {this.renderButton("Save")}
         </div>
       </form>
     );
