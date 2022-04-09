@@ -8,19 +8,25 @@ class Form extends Component {
 
   handleInputChange = async ({ currentTarget: input }) => {
     const { value } = input;
-    console.log(input);
-    console.log(input.id);
 
+    const errors = { ...this.state.errors };
+
+    //const error = await this.validateInput(input);
+
+    //if (error) errors[input.id] = error;
+    //else delete errors[input.id];
+
+    delete errors[input.id];
     const fields = { ...this.state.fields };
     fields[input.id] = value;
 
-    this.setState({ fields });
+    this.setState({ fields, errors });
   };
 
   catchExceptionMessage(ex) {
-    if (ex.response && ex.response.status === 400) {
+    if (ex.response && ex.response.status >= 400 && ex.response.status < 500) {
       const errors = { ...this.state.errors };
-      errors.username = ex.response.fields.message;
+      errors.username = ex.response.data.message;
       this.setState({ errors });
     }
   }

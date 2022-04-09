@@ -2,19 +2,30 @@ import React from "react";
 import { loginUser, registerUser } from "../../services/userService";
 import ReactLoading from "react-loading";
 import Form from "./form";
+import { toast } from "react-toastify";
 
 class Register extends Form {
   state = {
-    data: { username: "", password: "", passwordRepeat: "", telegram: "" },
+    fields: { username: "", password: "", passwordRepeat: "", telegram: "" },
     errors: {},
     loading: false,
   };
 
+  validateInput() {
+    const { password, passwordRepeat } = this.state.fields;
+    if (password !== passwordRepeat) return "Password does not match";
+  }
+
   doSubmit = async () => {
+    const error = this.validateInput();
+    if (error) {
+      toast(error);
+      return;
+    }
     this.setState({ loading: true });
     try {
-      await registerUser(this.state.data);
-      const { username, password } = this.state.data;
+      await registerUser(this.state.fields);
+      const { username, password } = this.state.fields;
       const user = { username: username, password: password };
       const { data } = await loginUser(user);
       localStorage.setItem("token", data.token);
@@ -27,7 +38,7 @@ class Register extends Form {
   };
 
   render() {
-    const { data, errors, loading } = this.state;
+    const { fields, errors, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -39,7 +50,7 @@ class Register extends Form {
               "username",
               "Username",
               "", // placeholder
-              data.username,
+              fields.username,
               this.handleInputChange,
               errors.username,
               true
@@ -49,20 +60,22 @@ class Register extends Form {
               "password",
               "Password",
               "", // placeholder
-              data.password,
+              fields.password,
               this.handleInputChange,
               errors.password,
-              true
+              true,
+              "password"
             )}
             <p className="mt-2"> </p>
             {this.renderInput(
               "passwordRepeat",
               "Confirm password",
               "", // placeholder
-              data.passwordRepeat,
+              fields.passwordRepeat,
               this.handleInputChange,
               errors.passwordRepeat,
-              true
+              true,
+              "password"
             )}
             <p className="mt-2"> </p>
             {this.renderButton("Register")}

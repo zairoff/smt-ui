@@ -11,6 +11,7 @@ class Login extends Form {
     loading: false,
     errors: {},
   };
+
   validateInput(input) {
     return "";
   }
