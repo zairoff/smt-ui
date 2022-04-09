@@ -4,12 +4,13 @@ import Table from "../common/table";
 class BrandTable extends Component {
   columns = [
     { path: "id", label: "ID" },
-    { path: "brand", label: "BRAND" },
+    { path: "name", label: "BRAND" },
     {
       path: "button",
-      content: (product) => (
+      content: (brand) => (
         <button
-          onClick={() => this.props.onDelete(product)}
+          type="button"
+          onClick={() => this.props.onDelete(brand)}
           className="btn btn-danger"
         >
           Delete
