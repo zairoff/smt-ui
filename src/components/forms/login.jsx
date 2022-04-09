@@ -12,16 +12,12 @@ class Login extends Form {
     errors: {},
   };
 
-  validateInput(input) {
-    return "";
-  }
-
   doSubmit = async () => {
     this.setState({ loading: true });
     const { fields: user } = this.state;
     try {
-      const { fields } = await loginUser(user);
-      localStorage.setItem("token", fields.token);
+      const { data } = await loginUser(user);
+      localStorage.setItem("token", data.token);
       window.location = "/";
     } catch (ex) {
       this.catchExceptionMessage(ex);
