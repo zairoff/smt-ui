@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Pagination from "../common/pagination";
 import ProductTable from "../tables/productTable";
 import { paginate } from "../../utils/paginate";
@@ -8,7 +8,6 @@ import _ from "lodash";
 import {
   getProducts,
   deleteProduct,
-  getProductByName,
   addProduct,
 } from "../../services/productService";
 import { toast } from "react-toastify";
@@ -29,7 +28,7 @@ class ProductForm extends Form {
       const { data } = await getProducts();
       this.setState({ data, loading: false });
     } catch (ex) {
-      this.catchExceptionMessage(ex);
+      toast(ex.response.data.message);
     }
   }
 
@@ -43,29 +42,41 @@ class ProductForm extends Form {
 
   doSubmit = async () => {
     const { data, fields } = this.state;
+    this.setState({ loading: true });
     try {
       const { data: result } = await addProduct({ name: fields.product });
       const newData = [...data, result];
       this.setState({ data: newData, fields });
     } catch (ex) {
       this.catchExceptionMessage(ex, "product");
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
   handleDelete = async ({ id }) => {
     const clone = [...this.state.data];
+    const { currentPage } = this.state;
     const data = clone.filter((d) => d.id !== id);
-    this.setState({ data, loading: true });
+    if (this.currentPageCheck(data))
+      this.setState({ data, currentPage: currentPage - 1, loading: true });
+    else this.setState({ data, loading: true });
 
     try {
       await deleteProduct(id);
     } catch (ex) {
       this.setState({ data: clone });
-      toast(ex.message);
+      this.catchExceptionMessage(ex, "product");
     } finally {
       this.setState({ loading: false });
     }
   };
+
+  currentPageCheck(data) {
+    const { pageSize } = this.state;
+
+    return data.length % pageSize == 0;
+  }
 
   render() {
     const {
