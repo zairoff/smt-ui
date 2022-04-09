@@ -1,6 +1,6 @@
 import { wait } from "@testing-library/user-event/dist/utils";
 import { values } from "lodash";
-import React, { Component } from "react";
+import React from "react";
 import { loginUser } from "../../services/userService";
 import ReactLoading from "react-loading";
 import Form from "./form";
@@ -20,7 +20,7 @@ class Login extends Form {
       localStorage.setItem("token", data.token);
       window.location = "/";
     } catch (ex) {
-      this.catchExceptionMessage(ex);
+      this.catchExceptionMessage(ex, "username");
     } finally {
       this.setState({ loading: false });
     }
@@ -49,7 +49,8 @@ class Login extends Form {
             fields.password,
             this.handleInputChange,
             errors.password,
-            true
+            true,
+            "password"
           )}
           {this.renderLink(
             "forgot password?",

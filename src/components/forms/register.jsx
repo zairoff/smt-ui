@@ -31,7 +31,7 @@ class Register extends Form {
       localStorage.setItem("token", data.token);
       window.location = "/";
     } catch (ex) {
-      this.catchExceptionMessage(ex);
+      this.catchExceptionMessage(ex, username);
     } finally {
       this.setState({ loading: false });
     }

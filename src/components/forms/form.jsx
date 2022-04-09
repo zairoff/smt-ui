@@ -23,10 +23,10 @@ class Form extends Component {
     this.setState({ fields, errors });
   };
 
-  catchExceptionMessage(ex) {
+  catchExceptionMessage(ex, input) {
     if (ex.response && ex.response.status >= 400 && ex.response.status < 500) {
       const errors = { ...this.state.errors };
-      errors.username = ex.response.data.message;
+      errors[input] = ex.response.data.message;
       this.setState({ errors });
     }
   }

@@ -29,7 +29,7 @@ class ProductForm extends Form {
       const { data } = await getProducts();
       this.setState({ data, loading: false });
     } catch (ex) {
-      toast(ex.message);
+      this.catchExceptionMessage(ex);
     }
   }
 
@@ -42,40 +42,13 @@ class ProductForm extends Form {
   };
 
   doSubmit = async () => {
-    const { data, product } = this.state;
-    const obj = { name: product };
-
-    // TODO: need to change
-    if (!product) {
-      toast("Fill the input");
-      return;
-    }
-
+    const { data, fields } = this.state;
     try {
-      const { data: result } = await addProduct(obj);
+      const { data: result } = await addProduct({ name: fields.product });
       const newData = [...data, result];
-      this.setState({ data: newData, product: "" });
+      this.setState({ data: newData, fields });
     } catch (ex) {
-      toast(ex.message);
-    }
-  };
-
-  validateInput(value, response) {
-    let error = "";
-    if (!value) error = "can't be empty";
-    if (response) error = "already exists in database";
-
-    return error;
-  }
-
-  handleInputChange = async ({ currentTarget: input }) => {
-    const { value } = input;
-    try {
-      const { data } = await getProductByName(value);
-      const errors = this.validateInput(value, data);
-      this.setState({ product: value, errors });
-    } catch (ex) {
-      toast(ex.message);
+      this.catchExceptionMessage(ex, "product");
     }
   };
 
