@@ -26,9 +26,11 @@ class ProductForm extends Form {
   async componentDidMount() {
     try {
       const { data } = await getProducts();
-      this.setState({ data, loading: false });
+      this.setState({ data });
     } catch (ex) {
       toast(ex.response.data.message);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 

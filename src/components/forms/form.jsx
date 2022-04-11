@@ -81,8 +81,10 @@ class Form extends Component {
     );
   }
 
-  renderSelect(name, options) {
-    return <Select name={name} options={options} />;
+  renderSelect(name, options, error, onChange) {
+    return (
+      <Select name={name} options={options} error={error} onChange={onChange} />
+    );
   }
 }
 

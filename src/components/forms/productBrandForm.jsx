@@ -2,71 +2,119 @@ import _ from "lodash";
 import React from "react";
 import { paginate } from "../../utils/paginate";
 import Pagination from "../common/pagination";
+import { toast } from "react-toastify";
 import ProductBrandTable from "../tables/productBrandTable";
+import { getProducts } from "../../services/productService";
+import { getBrands } from "../../services/brandService";
+import {
+  addProductBrand,
+  deleteProductBrand,
+  getProductBrands,
+} from "../../services/productBrandService";
 import Form from "./form";
+import ReactLoading from "react-loading";
 
 class ProductBrandForm extends Form {
   state = {
-    currentPage: 1,
     sortColumn: { path: "", order: "asc" },
-    pageSize: 4,
-    products: [
-      { id: 1, product: "TV" },
-      { id: 2, product: "Air" },
-    ],
-    brands: [
-      { id: 1, brand: "Artel" },
-      { id: 2, brand: "TCL" },
-    ],
-    rows: [
-      {
-        id: 1,
-        product: "TV",
-        brand: "Artel",
-      },
-      {
-        id: 2,
-        product: "TV",
-        brand: "TCL",
-      },
-      {
-        id: 3,
-        product: "TV",
-        brand: "Cultraview",
-      },
-      {
-        id: 4,
-        product: "Air",
-        brand: "Samsung",
-      },
-      {
-        id: 5,
-        product: "Washing",
-        brand: "WirePool",
-      },
-    ],
+    fields: { products: [], brands: [] },
+    currentPage: 1,
+    selectedItem: { product: "", brand: "" },
+    pageSize: 7,
+    data: [],
+    errors: {},
+    loading: true,
   };
+
+  async componentDidMount() {
+    try {
+      const { data: productBrands } = await getProductBrands();
+      const { data: products } = await getProducts();
+      const { data: brands } = await getBrands();
+      const fields = { products, brands };
+      this.setState({ data: productBrands, fields });
+    } catch (ex) {
+      toast(ex.message);
+    } finally {
+      this.setState({ loading: false });
+    }
+  }
+
+  doSubmit = async () => {
+    const { data, selectedItem } = this.state;
+    this.setState({ loading: true });
+    try {
+      const { data: result } = await addProductBrand({
+        ProductId: selectedItem.product,
+        BrandId: selectedItem.brand,
+      });
+      const newData = [...data, result];
+      this.setState({ data: newData });
+    } catch (ex) {
+      toast(ex.response.data.message);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  handleDelete = async ({ id }) => {
+    const clone = [...this.state.data];
+    const { currentPage } = this.state;
+    const data = clone.filter((d) => d.id !== id);
+    if (this.currentPageCheck(data))
+      this.setState({ data, currentPage: currentPage - 1, loading: true });
+    else this.setState({ data, loading: true });
+
+    try {
+      await deleteProductBrand(id);
+    } catch (ex) {
+      this.setState({ data: clone });
+      toast(ex.message);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  currentPageCheck(data) {
+    const { pageSize } = this.state;
+
+    return data.length % pageSize == 0;
+  }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
-  };
-
-  handleDelete = (item) => {
-    console.log("handleDelete:", item);
   };
 
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
 
+  handleSelectChange = ({ target }) => {
+    const { selectedItem } = this.state;
+    const { name, options } = target;
+
+    switch (name) {
+      case "Product":
+        selectedItem.product = options[options.selectedIndex].value;
+        break;
+      case "Brand":
+        selectedItem.brand = options[options.selectedIndex].value;
+        break;
+      default:
+        break;
+    }
+    this.setState({ selectedItem });
+  };
+
   render() {
     const {
-      rows: allData,
+      data: allData,
       pageSize,
       currentPage,
       sortColumn,
-      products,
-      brands,
+      fields,
+      errors,
+      loading,
     } = this.state;
 
     const itemsCount = allData.length;
@@ -79,7 +127,8 @@ class ProductBrandForm extends Form {
     const data = paginate(sortedData, currentPage, pageSize);
 
     return (
-      <form className="container m-2 row">
+      <form className="container m-2 row" onSubmit={this.handleSubmit}>
+        {loading && <ReactLoading className="test" type="spin" color="blue" />}
         <div className="col mt-4">
           <ProductBrandTable
             rows={data}
@@ -95,9 +144,19 @@ class ProductBrandForm extends Form {
           />
         </div>
         <div className="col m-5">
-          {this.renderSelect("Product", products)}
+          {this.renderSelect(
+            "Product",
+            fields.products,
+            errors.products,
+            this.handleSelectChange
+          )}
           <p className="mt-2"> </p>
-          {this.renderSelect("Brand", brands)}
+          {this.renderSelect(
+            "Brand",
+            fields.brands,
+            errors.brands,
+            this.handleSelectChange
+          )}
           <p className="mt-2"> </p>
           {this.renderButton("Save")}
         </div>

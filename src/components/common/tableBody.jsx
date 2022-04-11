@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import _ from "lodash";
 
 class TableBody extends Component {
   renderCell = (row, column) => {
     if (column.content) return column.content(row);
-
-    return row[column.path];
+    return _.get(row, column.path);
   };
 
   render() {
