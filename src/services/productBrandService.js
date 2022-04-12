@@ -15,8 +15,17 @@ export function getProductBrand(id) {
   return http.get(productBrandUrl(id));
 }
 
-export function getProductBrandByName(id) {
+export function getProductBrandByProductId(id) {
   const query = endPoint.concat("/GetByProductId?productId=").concat(id);
+  return http.get(query);
+}
+
+export function getProductBrandByProductAndBrandId(productId, brandId) {
+  const query = endPoint
+    .concat("/GetByProductAndBrandId?productId=")
+    .concat(productId)
+    .concat("&brandId=")
+    .concat(brandId);
   return http.get(query);
 }
 
