@@ -4,7 +4,7 @@ import Table from "../common/table";
 class LineTable extends Component {
   columns = [
     { path: "id", label: "ID" },
-    { path: "name", label: "Line" },
+    { path: "name", label: "LINE" },
     {
       path: "button",
       content: (brand) => (

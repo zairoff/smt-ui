@@ -4,7 +4,7 @@ import Table from "../common/table";
 class DefectTable extends Component {
   columns = [
     { path: "id", label: "ID" },
-    { path: "name", label: "Defect" },
+    { path: "name", label: "DEFECT" },
     {
       path: "button",
       content: (brand) => (
