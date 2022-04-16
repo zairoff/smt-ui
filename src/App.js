@@ -13,6 +13,7 @@ import { render } from "@testing-library/react";
 import jwtDecode from "jwt-decode";
 import DefectForm from "./components/forms/defectForm";
 import LineForm from "./components/forms/lineForm";
+import LineDefectForm from "./components/forms/lineDefectForm";
 
 class App extends Component {
   state = {};
@@ -39,6 +40,7 @@ class App extends Component {
             <Route path="/register" element={<Register />} />
             <Route path="/defect" element={<DefectForm />} />
             <Route path="/line" element={<LineForm />} />
+            <Route path="/lineDefect" element={<LineDefectForm />} />
           </Routes>
         </main>
       </React.Fragment>
