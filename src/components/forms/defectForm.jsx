@@ -43,7 +43,7 @@ class DefectForm extends Form {
       const newData = [...data, result];
       this.setState({ data: newData, fields });
     } catch (ex) {
-      this.catchExceptionMessage(ex, "brand");
+      this.catchExceptionMessage(ex, "defect");
     } finally {
       this.setState({ loading: false });
     }
@@ -115,7 +115,7 @@ class DefectForm extends Form {
             onPageChange={this.handlePageChange}
           />
         </div>
-        <div className="col m-5">
+        <div className="col m-4">
           {this.renderInput(
             "defect",
             "",
