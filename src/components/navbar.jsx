@@ -64,6 +64,11 @@ const NavBar = ({ user }) => {
                     Model
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/defect" className="dropdown-item">
+                    Defect
+                  </NavLink>
+                </li>
               </ul>
             </li>
           </ul>
