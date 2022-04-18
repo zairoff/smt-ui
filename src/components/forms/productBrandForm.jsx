@@ -9,6 +9,8 @@ import { getBrands } from "../../services/brandService";
 import {
   addProductBrand,
   deleteProductBrand,
+  getProductBrandByProductId,
+  getProductBrandByProductAndBrandId,
   getProductBrands,
 } from "../../services/productBrandService";
 import Form from "./form";
@@ -51,7 +53,7 @@ class ProductBrandForm extends Form {
       const newData = [...data, result];
       this.setState({ data: newData });
     } catch (ex) {
-      toast(ex.response.data.message);
+      toast.error(ex.response.data.message);
     } finally {
       this.setState({ loading: false });
     }
@@ -69,7 +71,7 @@ class ProductBrandForm extends Form {
       await deleteProductBrand(id);
     } catch (ex) {
       this.setState({ data: clone });
-      toast(ex.message);
+      toast.error(ex.message);
     } finally {
       this.setState({ loading: false });
     }
@@ -89,21 +91,28 @@ class ProductBrandForm extends Form {
     this.setState({ sortColumn });
   };
 
-  handleSelectChange = ({ target }) => {
+  handleSelectChange = async ({ target }) => {
+    const { name, value } = target;
     const { selectedItem } = this.state;
-    const { name, options } = target;
-
-    switch (name) {
-      case "Product":
-        selectedItem.product = options[options.selectedIndex].value;
-        break;
-      case "Brand":
-        selectedItem.brand = options[options.selectedIndex].value;
-        break;
-      default:
-        break;
+    if (!value) return;
+    // TODO: Need to find other way. Here extra server call occuring
+    try {
+      switch (name) {
+        case "Product":
+          selectedItem.product = value;
+          const { data } = await getProductBrandByProductId(value);
+          this.setState({ data, selectedItem });
+          break;
+        case "Brand":
+          selectedItem.brand = value;
+          this.setState({ selectedItem });
+          break;
+        default:
+          break;
+      }
+    } catch (ex) {
+      toast.error(ex.message);
     }
-    this.setState({ selectedItem });
   };
 
   render() {
