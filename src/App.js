@@ -14,6 +14,7 @@ import jwtDecode from "jwt-decode";
 import DefectForm from "./components/forms/defectForm";
 import LineForm from "./components/forms/lineForm";
 import LineDefectForm from "./components/forms/lineDefectForm";
+import DepartmentForm from "./components/forms/departmentForm";
 
 class App extends Component {
   state = {};
@@ -41,6 +42,7 @@ class App extends Component {
             <Route path="/defect" element={<DefectForm />} />
             <Route path="/line" element={<LineForm />} />
             <Route path="/lineDefect" element={<LineDefectForm />} />
+            <Route path="/department" element={<DepartmentForm />} />
           </Routes>
         </main>
       </React.Fragment>

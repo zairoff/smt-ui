@@ -33,6 +33,11 @@ const NavBar = ({ user }) => {
                 Report
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to="/department" className="nav-link">
+                Department
+              </NavLink>
+            </li>
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"

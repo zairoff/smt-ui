@@ -37,13 +37,14 @@ class Form extends Component {
     this.doSubmit();
   };
 
-  renderButton(label, error) {
+  renderButton(
+    label,
+    type,
+    onClick = null,
+    className = "btn btn-primary btn-block btn-lg w-100"
+  ) {
     return (
-      <button
-        disabled={error}
-        type="submit"
-        className="btn btn-primary btn-block btn-lg w-100"
-      >
+      <button onClick={onClick} type={type} className={className}>
         {label}
       </button>
     );
