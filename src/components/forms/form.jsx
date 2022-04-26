@@ -37,6 +37,10 @@ class Form extends Component {
     this.doSubmit();
   };
 
+  renderImage(image, className) {
+    return <img src={image} className={className}></img>;
+  }
+
   renderButton(
     label,
     type,
