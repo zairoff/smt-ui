@@ -31,6 +31,7 @@ class Department extends Component {
   render() {
     return (
       <TreeView
+        style={{ height: "auto" }}
         aria-label="file system navigator"
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
