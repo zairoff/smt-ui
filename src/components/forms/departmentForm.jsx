@@ -37,8 +37,9 @@ class DepartmentForm extends Form {
         departmentId: selected.hierarchyid,
         name: fields.department,
       });
+      fields.department = "";
       const { data } = await getDepartmentByHierarchyId("/", 0);
-      this.setState({ data, fields, loading: false });
+      this.setState({ data, fields, selected: {}, loading: false });
     } catch (ex) {
       this.setState({ loading: false });
       this.catchExceptionMessage(ex, "department");
@@ -50,7 +51,7 @@ class DepartmentForm extends Form {
     try {
       await deleteDepartment(this.state.selected.id);
       const { data } = await getDepartmentByHierarchyId("/", 0);
-      this.setState({ data, loading: false });
+      this.setState({ data, selected: {}, loading: false });
     } catch (ex) {
       this.setState({ loading: false });
       this.catchExceptionMessage(ex, "department");
