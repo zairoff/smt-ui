@@ -38,6 +38,11 @@ const NavBar = ({ user }) => {
                 Department
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to="/employee" className="nav-link">
+                Employee
+              </NavLink>
+            </li>
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
