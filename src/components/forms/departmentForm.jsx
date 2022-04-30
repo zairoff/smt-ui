@@ -7,7 +7,6 @@ import {
   addDepartment,
   deleteDepartment,
   getDepartmentByHierarchyId,
-  getDepartments,
 } from "../../services/departmentService";
 
 class DepartmentForm extends Form {
@@ -16,25 +15,31 @@ class DepartmentForm extends Form {
     fields: { department: "" },
     errors: {},
     loading: true,
-    selected: { id: 0, hierarchyid: "", name: "" },
+    selected: {},
   };
 
   async componentDidMount() {
     try {
-      const { data } = await getDepartmentByHierarchyId("/", 0);
-      this.setState({ data, loading: false });
+      const { data } = await getDepartmentByHierarchyId("/");
+      console.log("daaa", data);
+      this.setState({ data });
     } catch (ex) {
       toast.error(ex.response.data.message);
+    } finally {
       this.setState({ loading: false });
     }
   }
 
   doSubmit = async () => {
-    const { fields, selected } = this.state;
+    const { fields, selected, data } = this.state;
+    if (data.length > 0 && Object.keys(selected).length === 0) {
+      toast.warning("Select deparmtnet first");
+      return;
+    }
     this.setState({ loading: true });
     try {
       await addDepartment({
-        departmentId: selected.hierarchyid,
+        departmentId: selected.departmentId,
         name: fields.department,
       });
       fields.department = "";
@@ -58,7 +63,7 @@ class DepartmentForm extends Form {
     }
   };
 
-  onClicked = (selected) => {
+  handleDepartmentSelect = (selected) => {
     console.log("selected:", selected);
     this.setState({ selected });
   };
@@ -69,7 +74,7 @@ class DepartmentForm extends Form {
       <form className="container m-2 row" onSubmit={this.handleSubmit}>
         {loading && <ReactLoading className="test" type="spin" color="blue" />}
         <div className="col mt-4">
-          <Department data={data} onClick={this.onClicked} />
+          <Department data={data} onClick={this.handleDepartmentSelect} />
         </div>
         <div className="col m-2">
           {this.renderInput(

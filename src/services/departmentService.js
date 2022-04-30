@@ -15,10 +15,8 @@ export function getDepartment(id) {
   return http.get(departmentUrl(id));
 }
 
-export function getDepartmentByHierarchyId(hierarchyId, level) {
-  const query = endPoint.concat(
-    "/GetByHierarchyId?hierarchyId=" + hierarchyId + "&level=" + level
-  );
+export function getDepartmentByHierarchyId(hierarchyId) {
+  const query = endPoint.concat("/GetByHierarchyId?hierarchyId=" + hierarchyId);
   return http.get(query);
 }
 
