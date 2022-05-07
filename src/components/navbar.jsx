@@ -28,21 +28,61 @@ const NavBar = ({ user }) => {
                 Plan
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink to="/" className="nav-link">
-                Report
-              </NavLink>
-            </li>
+
             <li className="nav-item">
               <NavLink to="/department" className="nav-link">
                 Department
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink to="/employee" className="nav-link">
-                Employee
-              </NavLink>
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Employees
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink to="/employee-dashboard" className="dropdown-item">
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/brand" className="dropdown-item">
+                    Add
+                  </NavLink>
+                </li>
+              </ul>
             </li>
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Reports
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink to="/report" className="dropdown-item">
+                    Report
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/brand" className="dropdown-item">
+                    Report-Volnovoy
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"

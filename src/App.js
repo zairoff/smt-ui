@@ -15,6 +15,9 @@ import DefectForm from "./components/forms/defectForm";
 import LineForm from "./components/forms/lineForm";
 import LineDefectForm from "./components/forms/lineDefectForm";
 import DepartmentForm from "./components/forms/departmentForm";
+import EmployeeDashboard from "./components/forms/employee/employeeDashboard";
+import EmployeeAdd from "./components/forms/employee/employeeAdd";
+import Report from "./components/reports/report";
 
 class App extends Component {
   state = {};
@@ -43,6 +46,9 @@ class App extends Component {
             <Route path="/line" element={<LineForm />} />
             <Route path="/lineDefect" element={<LineDefectForm />} />
             <Route path="/department" element={<DepartmentForm />} />
+            <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+            <Route path="/employee-add" element={<EmployeeAdd />} />
+            <Route path="/report" element={<Report />} />
           </Routes>
         </main>
       </React.Fragment>
