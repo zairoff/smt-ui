@@ -234,7 +234,7 @@ class Report extends Form {
 
     return (
       <React.Fragment>
-        <div className="row mt-2">
+        <div className="row mt-4">
           <div className="col">
             {this.renderSelect(
               "Product",
@@ -252,7 +252,7 @@ class Report extends Form {
           <div className="col">
             {this.renderSelect("Line", lines, "", this.handleSelectChange)}
           </div>
-          <div className="row mt-2">
+          <div className="row mt-4">
             <div className="col">
               <ReportTable
                 rows={rows}
@@ -292,7 +292,7 @@ class Report extends Form {
                 </div>
               </div>
               <div
-                className="mt-2"
+                className=" ms-2 mt-4 mb-4"
                 style={{ fontWeight: "bold", width: "150px", height: "20px" }}
               >
                 TOTAL:{" "}
