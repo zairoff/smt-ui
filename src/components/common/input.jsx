@@ -9,11 +9,13 @@ const Input = ({
   error,
   required,
   type,
+  innerRef,
 }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
       <input
+        ref={innerRef}
         value={value}
         onChange={onChange}
         id={name}
