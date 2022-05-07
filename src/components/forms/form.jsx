@@ -37,10 +37,6 @@ class Form extends Component {
     this.doSubmit();
   };
 
-  renderImage(image, className) {
-    return <img src={image} className={className}></img>;
-  }
-
   renderButton(
     label,
     type,
@@ -70,7 +66,8 @@ class Form extends Component {
     onChange,
     error,
     required,
-    type = "text"
+    type = "text",
+    innerRef = null
   ) {
     return (
       <Input
@@ -82,6 +79,7 @@ class Form extends Component {
         error={error}
         required={required}
         type={type}
+        innerRef={innerRef}
       />
     );
   }
