@@ -60,7 +60,7 @@ class Report extends Form {
 
   handleSelectChange = async ({ target }) => {
     const { name, value: id } = target;
-
+    this.setState({ loading: true });
     try {
       switch (name) {
         case "Product":
@@ -78,6 +78,7 @@ class Report extends Form {
                 brandId: "",
                 modelId: "",
                 lineId: "",
+                loading: false,
               },
               models: [],
             });
@@ -103,6 +104,7 @@ class Report extends Form {
               fields: { barcode: "" },
               selectedItem,
               models,
+              loading: false,
             });
           }
           break;
@@ -112,7 +114,11 @@ class Report extends Form {
           selectedItem.modelId = id;
           selectedItem.lineId = null;
 
-          this.setState({ selectedItem, fields: { barcode: "" } });
+          this.setState({
+            selectedItem,
+            fields: { barcode: "" },
+            loading: false,
+          });
           break;
         case "Line":
           {
@@ -134,11 +140,15 @@ class Report extends Form {
               selectedItem,
               data,
               fields: { barcode: "" },
+              loading: false,
             });
           }
           break;
       }
-    } catch (ex) {}
+    } catch (ex) {
+      toast.error(ex.message);
+      this.setState({ loading: false });
+    }
   };
 
   handleButtonClick = async (defect) => {
