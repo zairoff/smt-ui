@@ -13,10 +13,10 @@ class EmployeeTable extends Component {
         />
       ),
     },
-    { path: "name", label: "NAME" },
-    { path: "department", label: "DEPARTMENT" },
-    { path: "position", label: "POSITION" },
-    { path: "status", label: "STATUS" },
+    { path: "name", label: "" },
+    { path: "department", label: "" },
+    { path: "position", label: "" },
+    { path: "status", label: "" },
     {
       path: "edit",
       content: (employee) => (

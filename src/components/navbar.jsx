@@ -29,12 +29,6 @@ const NavBar = ({ user }) => {
               </NavLink>
             </li>
 
-            <li className="nav-item">
-              <NavLink to="/department" className="nav-link">
-                Department
-              </NavLink>
-            </li>
-
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -46,6 +40,11 @@ const NavBar = ({ user }) => {
                 Employees
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink to="/department" className="dropdown-item">
+                    Department
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink to="/employee-dashboard" className="dropdown-item">
                     Dashboard
