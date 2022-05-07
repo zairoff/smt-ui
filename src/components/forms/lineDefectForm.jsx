@@ -8,6 +8,7 @@ import {
   deleteLineDefect,
   getByLineId,
   getLineDefect,
+  getLineDefectByLineId,
   getLineDefects,
 } from "../../services/lineDefectService";
 import Form from "./form";
@@ -100,7 +101,7 @@ class LineDefectForm extends Form {
       switch (name) {
         case "Line":
           selectedItem.line = value;
-          const { data } = await getByLineId(value);
+          const { data } = await getLineDefectByLineId(value);
           this.setState({ data, selectedItem });
           break;
         case "Defect":

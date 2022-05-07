@@ -15,7 +15,7 @@ export function getLineDefect(id) {
   return http.get(lineDefectUrl(id));
 }
 
-export function getByLineId(id) {
+export function getLineDefectByLineId(id) {
   const query = endPoint.concat("/GetByLineId?lineId=").concat(id);
   return http.get(query);
 }
