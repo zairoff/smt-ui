@@ -90,6 +90,25 @@ const NavBar = ({ user }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
+                Repairs
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink to="/repair" className="dropdown-item">
+                    Repair
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 Settings
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
