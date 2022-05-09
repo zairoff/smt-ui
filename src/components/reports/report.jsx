@@ -4,6 +4,7 @@ import { getModelByProductBrandId } from "../../services/modelService";
 import { getProducts } from "../../services/productService";
 import Form from "../forms/form";
 import { toast } from "react-toastify";
+import ReactLoading from "react-loading";
 import ButtonBadge from "../common/buttonBadge";
 import { getProductBrandByProductId } from "../../services/productBrandService";
 import { getLineDefectByLineId } from "../../services/lineDefectService";
@@ -51,9 +52,10 @@ class Report extends Form {
     try {
       const { data: products } = await getProducts();
       const { data: lines } = await getLines();
-      this.setState({ products, lines, loading: false });
+      this.setState({ products, lines });
     } catch (ex) {
       toast.error(ex.message);
+    } finally {
       this.setState({ loading: false });
     }
   }
@@ -78,9 +80,9 @@ class Report extends Form {
                 brandId: "",
                 modelId: "",
                 lineId: "",
-                loading: false,
               },
               models: [],
+              loading: false,
             });
           }
           break;
@@ -227,6 +229,7 @@ class Report extends Form {
       sortColumn,
       currentPage,
       pageSize,
+      loading,
     } = this.state;
 
     const sortedRows = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
@@ -234,6 +237,9 @@ class Report extends Form {
 
     return (
       <React.Fragment>
+        {loading && (
+          <ReactLoading className="loading" type="spin" color="blue" />
+        )}
         <div className="row mt-4">
           <div className="col">
             {this.renderSelect(

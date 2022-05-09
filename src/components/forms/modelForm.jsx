@@ -109,7 +109,7 @@ class ModelForm extends Form {
         name: fields.model,
       });
       const newData = [...data, result];
-      this.setState({ data: newData, loading: false });
+      this.setState({ data: newData, loading: false, fields: { model: "" } });
     } catch (ex) {
       this.setState({ loading: false });
       toast.error(ex.response.data.message);

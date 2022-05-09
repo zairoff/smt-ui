@@ -38,7 +38,7 @@ class LineForm extends Form {
     try {
       const { data: result } = await addLine({ name: fields.line });
       const newData = [...data, result];
-      this.setState({ data: newData, fields });
+      this.setState({ data: newData, fields: { line: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "line");
     } finally {

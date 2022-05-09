@@ -41,7 +41,7 @@ class DefectForm extends Form {
     try {
       const { data: result } = await addDefect({ name: fields.defect });
       const newData = [...data, result];
-      this.setState({ data: newData, fields });
+      this.setState({ data: newData, fields: { defect: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "defect");
     } finally {

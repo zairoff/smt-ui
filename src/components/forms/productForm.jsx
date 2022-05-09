@@ -48,7 +48,7 @@ class ProductForm extends Form {
     try {
       const { data: result } = await addProduct({ name: fields.product });
       const newData = [...data, result];
-      this.setState({ data: newData, fields });
+      this.setState({ data: newData, fields: { product: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "product");
     } finally {

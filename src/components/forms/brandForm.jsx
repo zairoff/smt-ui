@@ -36,7 +36,7 @@ class BrandForm extends Form {
     try {
       const { data: result } = await addBrand({ name: fields.brand });
       const newData = [...data, result];
-      this.setState({ data: newData, fields });
+      this.setState({ data: newData, fields: { brand: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "brand");
     } finally {
@@ -95,7 +95,9 @@ class BrandForm extends Form {
     const rows = paginate(sortedRows, currentPage, pageSize);
     return (
       <form className="container m-2 row " onSubmit={this.handleSubmit}>
-        {loading && <ReactLoading className="test" type="spin" color="blue" />}
+        {loading && (
+          <ReactLoading className="loading" type="spin" color="blue" />
+        )}
         <div className="col mt-4">
           <BrandTable
             rows={rows}
