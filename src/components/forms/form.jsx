@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Input from "../common/input";
 import Select from "../common/select";
+import TextArea from "../common/textArea";
 
 class Form extends Component {
   state = { fields: {}, errors: {} };
@@ -81,6 +82,12 @@ class Form extends Component {
         type={type}
         innerRef={innerRef}
       />
+    );
+  }
+
+  renderTextArea(name, label, value, onChange) {
+    return (
+      <TextArea name={name} label={label} value={value} onChange={onChange} />
     );
   }
 

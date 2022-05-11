@@ -6,7 +6,7 @@ const NavBar = ({ user }) => {
     <nav className="navbar navbar-expand-md navbar-light bg-light">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          {user ? user.username : "Artel"}
+          {user ? user.username : "Test"}
         </Link>
         <button
           className="navbar-toggler ms-auto"

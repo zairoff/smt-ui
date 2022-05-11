@@ -4,12 +4,24 @@ import ReactLoading from "react-loading";
 import Department from "../../common/department";
 import { getDepartmentByHierarchyId } from "../../../services/departmentService";
 import { toast } from "react-toastify";
+import { addEmployee } from "../../../services/employeeService";
 
 class EmployeeAdd extends Form {
   state = {
     loading: false,
-    file: null,
-    fields: { name: "", department: "", position: "", address: "", phone: "" },
+    photo: null,
+    image: null,
+    fields: {
+      name: "",
+      passport: "",
+      department: "",
+      position: "",
+      birthday: "",
+      address: "",
+      phone: "",
+      details: "",
+    },
+    departmentId: "",
     errors: {},
     departments: [],
   };
@@ -17,7 +29,8 @@ class EmployeeAdd extends Form {
   async componentDidMount() {
     try {
       const { data: departments } = await getDepartmentByHierarchyId("/");
-      this.setState({ departments });
+      const image = require("../../../assets/images/staff.jpg");
+      this.setState({ departments, image });
     } catch (ex) {
       toast.error(ex.response.data.message);
     } finally {
@@ -36,8 +49,10 @@ class EmployeeAdd extends Form {
   }
 
   handleImageSelect = (selected) => {
-    const file = URL.createObjectURL(selected.target.files[0]);
-    this.setState({ file });
+    this.setState({
+      photo: URL.createObjectURL(selected.target.files[0]),
+      image: selected.target.files[0],
+    });
   };
 
   renderFileUploadInput() {
@@ -49,13 +64,13 @@ class EmployeeAdd extends Form {
           display: "flex",
         }}
       >
-        <label className="custom-file-upload btn btn-secondary">
+        <label className="custom-image-upload btn btn-secondary">
           <input
             type="file"
             style={{ display: "none" }}
             onChange={this.handleImageSelect}
           />
-          upload
+          Browse
         </label>
       </div>
     );
@@ -70,19 +85,73 @@ class EmployeeAdd extends Form {
 
     fields.department = department[0].name;
     fields.position = name;
-    this.setState({ fields });
+    this.setState({ fields, departmentId: id });
+  };
+
+  doSubmit = async () => {
+    const { image, departmentId, fields } = this.state;
+    const {
+      name,
+      birthday,
+      phone,
+      address,
+      details,
+      department,
+      position,
+      passport,
+    } = fields;
+
+    const formData = new FormData();
+    formData.append("Position", position);
+    formData.append("DepartmentName", department);
+    formData.append("Passport", passport);
+    formData.append("DepartmentId", departmentId);
+    formData.append("FullName", name);
+    formData.append("Birthday", birthday);
+    formData.append("Phone", phone);
+    formData.append("Address", address);
+    formData.append("Details", details);
+    formData.append("File", image);
+
+    this.setState({ loading: true });
+
+    try {
+      const { data: result } = await addEmployee(formData);
+      toast.info("Success!");
+    } catch (ex) {
+      toast.error(ex.response.data.message);
+    } finally {
+      this.setState({
+        loading: false,
+        fields: {
+          name: "",
+          birthday: "",
+          phone: "",
+          address: "",
+          details: "",
+          department: "",
+          position: "",
+          passport: "",
+          photo: null,
+        },
+      });
+    }
   };
 
   render() {
-    const { loading, file, fields, errors, departments } = this.state;
+    const { loading, photo, fields, errors, departments } = this.state;
     return (
-      <form className="container mt-4 row " onSubmit={this.handleSubmit}>
+      <form
+        className="container mt-4 row "
+        encType="multipart/form-data"
+        onSubmit={this.handleSubmit}
+      >
         {loading && (
-          <ReactLoading className="loader" type="spin" color="blue" />
+          <ReactLoading className="loading" type="spin" color="blue" />
         )}
         <div className="col mt-4">
           {this.renderImage(
-            file ? file : require("../../../assets/images/staff.jpg")
+            photo ? photo : require("../../../assets/images/staff.jpg")
           )}
           <p className="mt-2"> </p>
           {this.renderFileUploadInput()}
@@ -90,11 +159,20 @@ class EmployeeAdd extends Form {
         <div className="col">
           {this.renderInput(
             "name",
-            "FullName",
+            "Full Name",
             "",
             fields.name,
             this.handleInputChange,
             errors.name,
+            true
+          )}
+          {this.renderInput(
+            "passport",
+            "Passport",
+            "",
+            fields.passport,
+            this.handleInputChange,
+            errors.passport,
             true
           )}
           {this.renderInput(
@@ -116,6 +194,16 @@ class EmployeeAdd extends Form {
             true
           )}
           {this.renderInput(
+            "birthday",
+            "Birthday",
+            "",
+            fields.birthday,
+            this.handleInputChange,
+            errors.birthday,
+            true,
+            "date"
+          )}
+          {this.renderInput(
             "address",
             "Address",
             "",
@@ -132,6 +220,12 @@ class EmployeeAdd extends Form {
             this.handleInputChange,
             errors.phone,
             true
+          )}
+          {this.renderTextArea(
+            "details",
+            "Additional info",
+            fields.details,
+            this.handleInputChange
           )}
           <p className="mt-2"> </p>
           {this.renderButton("Save")}
