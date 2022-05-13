@@ -1,6 +1,6 @@
 import React from "react";
 
-const Select = ({ name, options, error, onChange }) => {
+const Select = ({ name, options, error, onChange, property }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{name}</label>
@@ -14,7 +14,7 @@ const Select = ({ name, options, error, onChange }) => {
         <option value="" />
         {options.map((option) => (
           <option key={option.id} value={option.id}>
-            {option.name}
+            {option[property]}
           </option>
         ))}
       </select>
