@@ -91,9 +91,15 @@ class Form extends Component {
     );
   }
 
-  renderSelect(name, options, error, onChange) {
+  renderSelect(name, options, error, onChange, property = "name") {
     return (
-      <Select name={name} options={options} error={error} onChange={onChange} />
+      <Select
+        name={name}
+        options={options}
+        error={error}
+        onChange={onChange}
+        property={property}
+      />
     );
   }
 }
