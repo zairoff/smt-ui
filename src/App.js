@@ -18,6 +18,8 @@ import DepartmentForm from "./components/forms/departmentForm";
 import EmployeeDashboard from "./components/forms/employee/employeeDashboard";
 import EmployeeAdd from "./components/forms/employee/employeeAdd";
 import Report from "./components/reports/report";
+import EmployeeEdit from "./components/forms/employee/employeeEdit";
+import Repairer from "./components/forms/repairerForm";
 
 class App extends Component {
   state = {};
@@ -49,6 +51,8 @@ class App extends Component {
             <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
             <Route path="/employee-add" element={<EmployeeAdd />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/employee-edit" element={<EmployeeEdit />} />
+            <Route path="/repairer" element={<Repairer />} />
           </Routes>
         </main>
       </React.Fragment>

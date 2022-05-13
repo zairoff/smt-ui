@@ -37,7 +37,7 @@ const NavBar = ({ user }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Employees
+                Management
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
@@ -47,12 +47,17 @@ const NavBar = ({ user }) => {
                 </li>
                 <li>
                   <NavLink to="/employee-dashboard" className="dropdown-item">
-                    Dashboard
+                    Employee-dashboard
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/brand" className="dropdown-item">
-                    Add
+                  <NavLink to="/employee-add" className="dropdown-item">
+                    Employee-add
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/repairer" className="dropdown-item">
+                    Repairer
                   </NavLink>
                 </li>
               </ul>
