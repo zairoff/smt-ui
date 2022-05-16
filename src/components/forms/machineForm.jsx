@@ -1,0 +1,137 @@
+import React from "react";
+import Pagination from "../common/pagination";
+import { paginate } from "../../utils/paginate";
+import ReactLoading from "react-loading";
+import _ from "lodash";
+import Form from "./form";
+import { toast } from "react-toastify";
+import {
+  addMachine,
+  deleteMachine,
+  getMachines,
+} from "../../services/machineService";
+import MachineTable from "../tables/machineTable";
+
+class MachineForm extends Form {
+  state = {
+    sortColumn: { path: "", order: "asc" },
+    fields: { machine: "" },
+    currentPage: 1,
+    pageSize: 7,
+    data: [],
+    errors: {},
+    loading: true,
+  };
+
+  async componentDidMount() {
+    try {
+      const { data } = await getMachines();
+      this.setState({ data });
+    } catch (ex) {
+      toast(ex.response.data.message);
+    } finally {
+      this.setState({ loading: false });
+    }
+  }
+
+  doSubmit = async () => {
+    const { data, fields } = this.state;
+    this.setState({ loading: true });
+    try {
+      const { data: result } = await addMachine({ name: fields.machine });
+      const newData = [...data, result];
+      this.setState({ data: newData, fields: { machine: "" } });
+    } catch (ex) {
+      this.catchExceptionMessage(ex, "machine");
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  handleDelete = async ({ id }) => {
+    const clone = [...this.state.data];
+    const { currentPage } = this.state;
+    const data = clone.filter((d) => d.id !== id);
+    if (this.currentPageCheck(data))
+      this.setState({ data, currentPage: currentPage - 1, loading: true });
+    else this.setState({ data, loading: true });
+
+    try {
+      await deleteMachine(id);
+    } catch (ex) {
+      this.setState({ data: clone });
+      this.catchExceptionMessage(ex, "machine");
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  currentPageCheck(data) {
+    const { pageSize } = this.state;
+
+    return data.length % pageSize == 0;
+  }
+
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
+  render() {
+    const {
+      data: allRows,
+      pageSize,
+      currentPage,
+      sortColumn,
+      loading,
+      fields,
+      errors,
+    } = this.state;
+
+    const sortedRows = _.orderBy(
+      allRows,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
+    const rows = paginate(sortedRows, currentPage, pageSize);
+    return (
+      <form className="container m-2 row " onSubmit={this.handleSubmit}>
+        {loading && (
+          <ReactLoading className="loading" type="spin" color="blue" />
+        )}
+        <div className="col mt-4">
+          <MachineTable
+            rows={rows}
+            onSort={this.handleSort}
+            sortColumn={sortColumn}
+            onDelete={this.handleDelete}
+          />
+          <Pagination
+            itemsCount={allRows.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
+        </div>
+        <div className="col m-5">
+          {this.renderInput(
+            "machine",
+            "",
+            "",
+            fields.machine,
+            this.handleInputChange,
+            errors.machine,
+            true
+          )}
+          <p className="mt-2"> </p>
+          {this.renderButton("Save")}
+        </div>
+      </form>
+    );
+  }
+}
+
+export default MachineForm;

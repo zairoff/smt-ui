@@ -55,11 +55,6 @@ const NavBar = ({ user }) => {
                     Employee-add
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/repairer" className="dropdown-item">
-                    Repairer
-                  </NavLink>
-                </li>
               </ul>
             </li>
 
@@ -98,6 +93,35 @@ const NavBar = ({ user }) => {
                 Repairs
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink to="/repairer" className="dropdown-item">
+                    Repairer
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/repair" className="dropdown-item">
+                    Repair
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Machines
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink to="/machine" className="dropdown-item">
+                    Machine
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink to="/repair" className="dropdown-item">
                     Repair
