@@ -68,7 +68,9 @@ class Form extends Component {
     error,
     required,
     type = "text",
-    innerRef = null
+    innerRef = null,
+    readOnly = false,
+    onKeyDown = undefined
   ) {
     return (
       <Input
@@ -81,6 +83,8 @@ class Form extends Component {
         required={required}
         type={type}
         innerRef={innerRef}
+        readOnly={readOnly}
+        onKeyDown={onKeyDown}
       />
     );
   }
@@ -91,14 +95,22 @@ class Form extends Component {
     );
   }
 
-  renderSelect(name, options, error, onChange, property = "name") {
+  renderSelect(
+    name,
+    options,
+    error,
+    onChange,
+    propertyKey = "id",
+    propertyValue = "name"
+  ) {
     return (
       <Select
         name={name}
         options={options}
         error={error}
         onChange={onChange}
-        property={property}
+        propertyKey={propertyKey}
+        propertyValue={propertyValue}
       />
     );
   }
