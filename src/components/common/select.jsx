@@ -1,6 +1,14 @@
+import _ from "lodash";
 import React from "react";
 
-const Select = ({ name, options, error, onChange, property }) => {
+const Select = ({
+  name,
+  options,
+  error,
+  onChange,
+  propertyKey,
+  propertyValue,
+}) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{name}</label>
@@ -13,8 +21,11 @@ const Select = ({ name, options, error, onChange, property }) => {
       >
         <option value="" />
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option[property]}
+          <option
+            key={_.get(option, propertyKey)}
+            value={_.get(option, propertyKey)}
+          >
+            {_.get(option, propertyValue)}
           </option>
         ))}
       </select>

@@ -10,6 +10,8 @@ const Input = ({
   required,
   type,
   innerRef,
+  readOnly,
+  onKeyDown,
 }) => {
   return (
     <div className="form-group">
@@ -24,6 +26,8 @@ const Input = ({
         className="form-control form-control-lg"
         required={required}
         autoComplete="off"
+        readOnly={readOnly}
+        onKeyDown={onKeyDown}
       ></input>
       {error && <div className="alert alert-danger p-2">{error}</div>}
     </div>
