@@ -8,7 +8,6 @@ function repairerUrl(id) {
 }
 
 export function getRepairers() {
-  console.log(endPoint);
   return http.get(endPoint);
 }
 

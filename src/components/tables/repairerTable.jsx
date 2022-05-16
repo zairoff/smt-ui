@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import Table from "../common/table";
-import config from "../../config.json";
-
-const fileUrl = config.fileUrl;
 
 class RepairerTable extends Component {
   columns = [
