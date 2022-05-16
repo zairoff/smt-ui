@@ -139,6 +139,7 @@ class Repairer extends Form {
             repairers,
             errors.repairers,
             this.handleSelectChange,
+            "id",
             "fullName"
           )}
           <p className="mt-2"> </p>
