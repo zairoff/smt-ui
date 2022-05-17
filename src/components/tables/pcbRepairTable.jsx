@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Table from "../common/table";
 
-class RepairTable extends Component {
+class PcbRepairTable extends Component {
   columns = [
     { path: "report.barcode", label: "" },
     { path: "report.model.name", label: "" },
@@ -35,4 +35,4 @@ class RepairTable extends Component {
   }
 }
 
-export default RepairTable;
+export default PcbRepairTable;

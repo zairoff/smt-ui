@@ -3,17 +3,17 @@ import { toast } from "react-toastify";
 import { paginate } from "../../utils/paginate";
 import ReactLoading from "react-loading";
 import Form from "./form";
-import RepairTable from "../tables/repairTable";
+import PcbRepairTable from "../tables/pcbRepairTable";
 import _ from "lodash";
 import { getReportByBarcode } from "../../services/reportService";
-import { getRepairers } from "../../services/repairerService";
+import { getPcbRepairers } from "../../services/pcbRepairerService";
 import {
-  addRepair,
-  deleteRepair,
-  getRepairsByDate,
-} from "../../services/repairService";
+  addPcbRepair,
+  deletePcbRepair,
+  getPcbRepairsByDate,
+} from "../../services/pcbRepairService";
 
-class Repair extends Form {
+class PcbRepairForm extends Form {
   state = {
     sortColumn: { path: "", order: "asc" },
     fields: { barcode: "", action: "", searchDate: "" },
@@ -35,9 +35,9 @@ class Repair extends Form {
 
   async componentDidMount() {
     try {
-      const { data: repairers } = await getRepairers();
+      const { data: repairers } = await getPcbRepairers();
       const date = new Date().toDateString();
-      const { data } = await getRepairsByDate(date);
+      const { data } = await getPcbRepairsByDate(date);
       this.setState({
         repairers,
         data,
@@ -80,7 +80,7 @@ class Repair extends Form {
   handleSave = async () => {
     const { employeeId, reportId, fields, condition } = this.state;
     try {
-      const { data: repair } = await addRepair({
+      const { data: repair } = await addPcbRepair({
         reportId,
         condition,
         action: fields.action,
@@ -108,7 +108,7 @@ class Repair extends Form {
     const filtered = clone.filter((r) => r.id != id);
     this.setState({ data: filtered, loading: true });
     try {
-      await deleteRepair(id);
+      await deletePcbRepair(id);
     } catch (ex) {
       toast.error(ex.response.data.message);
       this.state({ data: clone });
@@ -152,7 +152,7 @@ class Repair extends Form {
 
   handleSearch = async () => {
     try {
-      const { data } = await getRepairsByDate(this.state.fields.searchDate);
+      const { data } = await getPcbRepairsByDate(this.state.fields.searchDate);
       this.setState({ data });
     } catch (ex) {
       toast.error(ex.response.data.message);
@@ -205,7 +205,7 @@ class Repair extends Form {
           </div>
 
           {rows.length > 0 && (
-            <RepairTable
+            <PcbRepairTable
               rows={rows}
               onSort={this.handleSort}
               sortColumn={sortColumn}
@@ -294,4 +294,4 @@ class Repair extends Form {
   }
 }
 
-export default Repair;
+export default PcbRepairForm;

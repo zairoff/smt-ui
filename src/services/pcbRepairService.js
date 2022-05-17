@@ -1,29 +1,29 @@
 import config from "../config.json";
 import http from "./httpService";
 
-const endPoint = config.apiUrl + "repair";
+const endPoint = config.apiUrl + "pcbrepair";
 
-function repairUrl(id) {
+function pcbRepairUrl(id) {
   return `${endPoint}/${id}`;
 }
 
-export function getRepairs() {
+export function getPcbRepairs() {
   return http.get(endPoint);
 }
 
-export function getRepairsByDate(date) {
+export function getPcbRepairsByDate(date) {
   const query = endPoint.concat("/GetByDate?date=").concat(date);
   return http.get(query);
 }
 
 export function getRepair(id) {
-  return http.get(repairUrl(id));
+  return http.get(pcbRepairUrl(id));
 }
 
-export function addRepair(repair) {
+export function addPcbRepair(repair) {
   return http.post(endPoint, repair);
 }
 
-export function deleteRepair(id) {
-  return http.delete(repairUrl(id));
+export function deletePcbRepair(id) {
+  return http.delete(pcbRepairUrl(id));
 }

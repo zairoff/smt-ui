@@ -3,18 +3,18 @@ import React from "react";
 import { getDepartmentByHierarchyId } from "../../services/departmentService";
 import { getEmployeeByDepartmentId } from "../../services/employeeService";
 import {
-  addRepairer,
-  deleteRepairer,
-  getRepairers,
-} from "../../services/repairerService";
+  addPcbRepairer,
+  deletePcbRepairer,
+  getPcbRepairers,
+} from "../../services/pcbRepairerService";
 import Department from "../common/department";
-import RepairerTable from "../tables/repairerTable";
+import PcbRepairerTable from "../tables/pcbRepairerTable";
 import Form from "./form";
 import { toast } from "react-toastify";
 import { paginate } from "../../utils/paginate";
 import ReactLoading from "react-loading";
 
-class Repairer extends Form {
+class PcbRepairerForm extends Form {
   state = {
     sortColumn: { path: "", order: "asc" },
     currentPage: 1,
@@ -30,7 +30,7 @@ class Repairer extends Form {
   async componentDidMount() {
     try {
       const { data: departments } = await getDepartmentByHierarchyId("/");
-      const { data } = await getRepairers();
+      const { data } = await getPcbRepairers();
       this.setState({ departments, data });
     } catch (ex) {
       toast.error(ex.response.data.message);
@@ -74,7 +74,9 @@ class Repairer extends Form {
   doSubmit = async () => {
     const { employeeId, data } = this.state;
     try {
-      const { data: repairer } = await addRepairer({ employeeid: employeeId });
+      const { data: repairer } = await addPcbRepairer({
+        employeeid: employeeId,
+      });
       this.setState({ data: [...data, repairer] });
     } catch (ex) {
       toast.error(ex.response.data.message);
@@ -88,7 +90,7 @@ class Repairer extends Form {
     const filter = clone.filter((r) => r.id != id);
     this.setState({ loading: true, data: filter });
     try {
-      await deleteRepairer(id);
+      await deletePcbRepairer(id);
     } catch (ex) {
       this.setState({ data: clone });
       toast.error(ex.response.data.message);
@@ -119,7 +121,7 @@ class Repairer extends Form {
         )}
         <div className="col m-2">
           {rows.length > 0 && (
-            <RepairerTable
+            <PcbRepairerTable
               rows={rows}
               onSort={this.handleSort}
               sortColumn={sortColumn}
@@ -135,7 +137,7 @@ class Repairer extends Form {
         </div>
         <div className="col-3 m-2">
           {this.renderSelect(
-            "Repairer",
+            "Repairers",
             repairers,
             errors.repairers,
             this.handleSelectChange,
@@ -150,4 +152,4 @@ class Repairer extends Form {
   }
 }
 
-export default Repairer;
+export default PcbRepairerForm;
