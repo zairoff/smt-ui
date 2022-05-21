@@ -13,6 +13,8 @@ import {
 import MachineTable from "../tables/machineTable";
 
 class MachineForm extends Form {
+  inputFile = React.createRef();
+
   state = {
     sortColumn: { path: "", order: "asc" },
     fields: { machine: "" },
@@ -21,6 +23,7 @@ class MachineForm extends Form {
     data: [],
     errors: {},
     loading: true,
+    image: null,
   };
 
   async componentDidMount() {
@@ -35,12 +38,19 @@ class MachineForm extends Form {
   }
 
   doSubmit = async () => {
-    const { data, fields } = this.state;
+    const { data, fields, image } = this.state;
+    if (!image) {
+      toast.warning("Please upload image!");
+      return;
+    }
     this.setState({ loading: true });
     try {
-      const { data: result } = await addMachine({ name: fields.machine });
+      const formData = new FormData();
+      formData.append("name", fields.machine);
+      formData.append("file", image);
+      const { data: result } = await addMachine(formData);
       const newData = [...data, result];
-      this.setState({ data: newData, fields: { machine: "" } });
+      this.setState({ data: newData, fields: { machine: "", image: null } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "machine");
     } finally {
@@ -80,6 +90,24 @@ class MachineForm extends Form {
     this.setState({ currentPage: page });
   };
 
+  handleFileUpload = (e) => {
+    const { files } = e.target;
+    if (files && files.length) {
+      const filename = files[0].name;
+
+      var parts = filename.split(".");
+      const fileType = parts[parts.length - 1];
+      console.log("fileType", fileType); //ex: zip, rar, jpg, svg etc.
+
+      //setImage(files[0]);
+      this.setState({ image: files[0] });
+    }
+  };
+
+  handleImageClick = () => {
+    this.inputFile.current.click();
+  };
+
   render() {
     const {
       data: allRows,
@@ -89,6 +117,7 @@ class MachineForm extends Form {
       loading,
       fields,
       errors,
+      image,
     } = this.state;
 
     const sortedRows = _.orderBy(
@@ -117,17 +146,35 @@ class MachineForm extends Form {
           />
         </div>
         <div className="col m-5">
-          {this.renderInput(
-            "machine",
-            "",
-            "",
-            fields.machine,
-            this.handleInputChange,
-            errors.machine,
-            true
-          )}
-          <p className="mt-2"> </p>
-          {this.renderButton("Save")}
+          <div className="row">
+            <div className="col-5 mt-4">
+              <input
+                style={{ display: "none" }}
+                // accept=".zip,.rar"
+                ref={this.inputFile}
+                onChange={this.handleFileUpload}
+                type="file"
+              />
+              <img
+                src={image ? URL.createObjectURL(image) : null}
+                style={{ height: "200px", width: "100%", objectFit: "cover" }}
+                onClick={this.handleImageClick}
+              />
+            </div>
+            <div className="col">
+              {this.renderInput(
+                "machine",
+                "",
+                "",
+                fields.machine,
+                this.handleInputChange,
+                errors.machine,
+                true
+              )}
+              <p className="mt-2"> </p>
+              {this.renderButton("Save")}
+            </div>
+          </div>
         </div>
       </form>
     );

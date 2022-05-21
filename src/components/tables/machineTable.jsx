@@ -1,16 +1,28 @@
 import React, { Component } from "react";
 import Table from "../common/table";
+import config from "../../config.json";
+
+const fileUrl = config.fileUrl;
 
 class MachineTable extends Component {
   columns = [
-    { path: "id", label: "ID" },
-    { path: "name", label: "MACHINE" },
+    {
+      path: "image",
+      content: (machine) => (
+        <img
+          src={fileUrl + machine.imageUrl}
+          className="rounded"
+          style={{ height: "100px", width: "100px", objectFit: "cover" }}
+        ></img>
+      ),
+    },
+    { path: "name", label: "" },
     {
       path: "button",
-      content: (brand) => (
+      content: (machine) => (
         <button
           type="button"
-          onClick={() => this.props.onDelete(brand)}
+          onClick={() => this.props.onDelete(machine)}
           className="btn btn-danger"
         >
           Delete
