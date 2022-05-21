@@ -15,7 +15,11 @@ class TableBody extends Component {
         {rows.map((row) => (
           <tr key={row.id}>
             {columns.map((column) => (
-              <td className="align-middle text-center" key={column.path}>
+              <td
+                className="align-middle text-center text-truncate"
+                style={{ maxWidth: "60px" }}
+                key={column.path}
+              >
                 {this.renderCell(row, column)}
               </td>
             ))}
