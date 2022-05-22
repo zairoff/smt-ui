@@ -7,6 +7,7 @@ import {
   addDepartment,
   deleteDepartment,
   getDepartmentByHierarchyId,
+  updateDepartment,
 } from "../../services/departmentService";
 
 class DepartmentForm extends Form {
@@ -63,6 +64,26 @@ class DepartmentForm extends Form {
     }
   };
 
+  handleUpdate = async () => {
+    const { fields, selected, data } = this.state;
+    if (data.length > 0 && Object.keys(selected).length === 0) {
+      toast.warning("Select deparmtnet first");
+      return;
+    }
+    this.setState({ loading: true });
+    try {
+      await updateDepartment(selected.id, {
+        name: fields.department,
+      });
+      fields.department = "";
+      const { data } = await getDepartmentByHierarchyId("/", 0);
+      this.setState({ data, selected: {}, fields, loading: false });
+    } catch (ex) {
+      this.setState({ loading: false });
+      this.catchExceptionMessage(ex, "department");
+    }
+  };
+
   handleDepartmentSelect = (selected) => {
     console.log("selected:", selected);
     this.setState({ selected });
@@ -88,6 +109,13 @@ class DepartmentForm extends Form {
           )}
           <p className="mt-2"> </p>
           {this.renderButton("Save", "submit")}
+          <p className="mt-2"> </p>
+          {this.renderButton(
+            "Update",
+            "button",
+            this.handleUpdate,
+            "btn btn-secondary btn-block btn-lg w-100"
+          )}
           <p className="mt-2"> </p>
           {this.renderButton(
             "Delete",
