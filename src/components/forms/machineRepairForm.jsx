@@ -22,7 +22,6 @@ class MachineRepairForm extends Form {
     fields: { issue: "", action: "", notificationDate: "", createdDate: "" },
     currentPage: 1,
     pageSize: 7,
-    departments: [],
     machines: [],
     data: [],
     repairers: [],
@@ -34,11 +33,10 @@ class MachineRepairForm extends Form {
 
   async componentDidMount() {
     try {
-      const { data: departments } = await getDepartmentByHierarchyId("/");
       const { data: machines } = await getMachines();
       const { data: repairers } = await getMachineRepairers();
       const { data } = await getMachineRepairs();
-      this.setState({ departments, data, machines, repairers });
+      this.setState({ data, machines, repairers });
     } catch (ex) {
       toast.error(ex.response.data.message);
     } finally {

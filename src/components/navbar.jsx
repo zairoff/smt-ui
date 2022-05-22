@@ -94,12 +94,12 @@ const NavBar = ({ user }) => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <NavLink to="/repairer" className="dropdown-item">
+                  <NavLink to="/pcb-repairer" className="dropdown-item">
                     Repairer
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/repair" className="dropdown-item">
+                  <NavLink to="/pcb-repair" className="dropdown-item">
                     Repair
                   </NavLink>
                 </li>
@@ -118,12 +118,22 @@ const NavBar = ({ user }) => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
+                  <NavLink to="/machine-dashboard" className="dropdown-item">
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink to="/machine" className="dropdown-item">
                     Machine
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/repair" className="dropdown-item">
+                  <NavLink to="/machine-repairer" className="dropdown-item">
+                    Repairer
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/machine-repair" className="dropdown-item">
                     Repair
                   </NavLink>
                 </li>
