@@ -5,12 +5,14 @@ import Department from "../../common/department";
 import { getDepartmentByHierarchyId } from "../../../services/departmentService";
 import { toast } from "react-toastify";
 import { addEmployee } from "../../../services/employeeService";
+import { addFile } from "../../../services/fileService";
+import config from "../../../config.json";
 
 class EmployeeAdd extends Form {
+  inputFile = React.createRef();
   state = {
     loading: false,
-    photo: null,
-    image: null,
+    imageFileName: "",
     fields: {
       name: "",
       passport: "",
@@ -29,8 +31,7 @@ class EmployeeAdd extends Form {
   async componentDidMount() {
     try {
       const { data: departments } = await getDepartmentByHierarchyId("/");
-      const image = require("../../../assets/images/staff.jpg");
-      this.setState({ departments, image });
+      this.setState({ departments });
     } catch (ex) {
       toast.error(ex.response.data.message);
     } finally {
@@ -38,43 +39,27 @@ class EmployeeAdd extends Form {
     }
   }
 
-  renderImage(img) {
-    return (
-      <img
-        src={img}
-        className="rounded"
-        style={{ height: "200px", width: "200px", objectFit: "cover" }}
-      ></img>
-    );
-  }
+  handleFileUpload = async (e) => {
+    const { files } = e.target;
 
-  handleImageSelect = (selected) => {
-    this.setState({
-      photo: URL.createObjectURL(selected.target.files[0]),
-      image: selected.target.files[0],
-    });
+    if (files && files.length) {
+      try {
+        this.setState({ loading: true });
+        const formData = new FormData();
+        formData.append("file", files[0]);
+        const { data } = await addFile(formData);
+        this.setState({ imageFileName: data });
+      } catch (ex) {
+        toast.error(ex.response.data.message);
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
   };
 
-  renderFileUploadInput() {
-    return (
-      <div
-        style={{
-          fontFamily: "sans-serif",
-          textAlign: "center",
-          display: "flex",
-        }}
-      >
-        <label className="custom-image-upload btn btn-secondary">
-          <input
-            type="file"
-            style={{ display: "none" }}
-            onChange={this.handleImageSelect}
-          />
-          Browse
-        </label>
-      </div>
-    );
-  }
+  handleImageClick = () => {
+    this.inputFile.current.click();
+  };
 
   handleDepartmentSelect = ({ id, departmentId, name }) => {
     let fields = { ...this.state.fields };
@@ -89,34 +74,30 @@ class EmployeeAdd extends Form {
   };
 
   doSubmit = async () => {
-    const { image, departmentId, fields } = this.state;
-    const {
-      name,
+    const { imageFileName, departmentId, fields } = this.state;
+    const { name, birthday, phone, address, details, passport } = fields;
+
+    if (!imageFileName) {
+      toast.warning("Choose image!");
+      return;
+    }
+
+    const employee = {
+      passport,
+      departmentId,
+      FullName: name,
       birthday,
       phone,
       address,
       details,
-      department,
-      position,
-      passport,
-    } = fields;
-
-    const formData = new FormData();
-    formData.append("Position", position);
-    formData.append("DepartmentName", department);
-    formData.append("Passport", passport);
-    formData.append("DepartmentId", departmentId);
-    formData.append("FullName", name);
-    formData.append("Birthday", birthday);
-    formData.append("Phone", phone);
-    formData.append("Address", address);
-    formData.append("Details", details);
-    formData.append("File", image);
+      ImagePath: imageFileName,
+      IsActive: true,
+    };
 
     this.setState({ loading: true });
 
     try {
-      const { data: result } = await addEmployee(formData);
+      await addEmployee(employee);
       toast.info("Success!");
     } catch (ex) {
       toast.error(ex.response.data.message);
@@ -132,14 +113,14 @@ class EmployeeAdd extends Form {
           department: "",
           position: "",
           passport: "",
-          photo: null,
+          imageFileName: "",
         },
       });
     }
   };
 
   render() {
-    const { loading, photo, fields, errors, departments } = this.state;
+    const { loading, imageFileName, fields, errors, departments } = this.state;
     return (
       <form
         className="container mt-4 row "
@@ -150,11 +131,24 @@ class EmployeeAdd extends Form {
           <ReactLoading className="loading" type="spin" color="blue" />
         )}
         <div className="col mt-4">
-          {this.renderImage(
-            photo ? photo : require("../../../assets/images/staff.jpg")
-          )}
-          <p className="mt-2"> </p>
-          {this.renderFileUploadInput()}
+          <div className="col-5 mt-4">
+            <input
+              style={{ display: "none" }}
+              // accept=".zip,.rar"
+              ref={this.inputFile}
+              onChange={this.handleFileUpload}
+              type="file"
+            />
+            <img
+              src={
+                imageFileName
+                  ? config.fileUrl + imageFileName
+                  : require("../../../assets/images/staff.jpg")
+              }
+              style={{ height: "200px", width: "200px", objectFit: "cover" }}
+              onClick={this.handleImageClick}
+            />
+          </div>
         </div>
         <div className="col">
           {this.renderInput(
@@ -219,7 +213,8 @@ class EmployeeAdd extends Form {
             fields.phone,
             this.handleInputChange,
             errors.phone,
-            true
+            true,
+            "number"
           )}
           {this.renderTextArea(
             "details",

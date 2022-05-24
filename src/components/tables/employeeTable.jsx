@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import Table from "../common/table";
+import config from "../../config.json";
+import { Link } from "react-router-dom";
+
+const fileUrl = config.fileUrl;
 
 class EmployeeTable extends Component {
   columns = [
@@ -7,26 +11,27 @@ class EmployeeTable extends Component {
       path: "image",
       content: (employee) => (
         <img
-          src={employee.image}
+          src={fileUrl + employee.imageUrl}
           className="rounded-circle"
           style={{ height: "65px", width: "65px", objectFit: "cover" }}
-        />
+        ></img>
       ),
     },
-    { path: "name", label: "" },
-    { path: "department", label: "" },
-    { path: "position", label: "" },
-    { path: "status", label: "" },
+    { path: "fullName", label: "" },
+    { path: "department.name", label: "" },
+    { path: "phone", label: "" },
     {
       path: "edit",
       content: (employee) => (
-        <button
-          type="button"
-          onClick={() => this.props.onEdit(employee)}
-          className="btn btn-primary"
+        <Link
+          to={{
+            pathname: "/employee-edit/" + employee.id,
+          }}
+          state={{ data: employee }}
+          className="link"
         >
           Edit
-        </button>
+        </Link>
       ),
     },
     {
