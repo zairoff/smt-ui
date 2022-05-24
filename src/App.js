@@ -9,7 +9,6 @@ import Login from "./components/forms/login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Register from "./components/forms/register";
-import { render } from "@testing-library/react";
 import jwtDecode from "jwt-decode";
 import DefectForm from "./components/forms/defectForm";
 import LineForm from "./components/forms/lineForm";
@@ -19,8 +18,14 @@ import EmployeeDashboard from "./components/forms/employee/employeeDashboard";
 import EmployeeAdd from "./components/forms/employee/employeeAdd";
 import Report from "./components/reports/report";
 import EmployeeEdit from "./components/forms/employee/employeeEdit";
-import Repairer from "./components/forms/repairerForm";
-import Repair from "./components/forms/repairForm";
+import MachineForm from "./components/forms/machineForm";
+import MachineRepairForm from "./components/forms/machineRepairForm";
+import PcbRepairerForm from "./components/forms/pcbRepairerForm";
+import PcbRepairForm from "./components/forms/pcbRepairForm";
+import MachineRepairerForm from "./components/forms/machineRepairerForm";
+import Card from "./components/common/card";
+import MachineDashborad from "./components/machineDashboard";
+import MachineHistory from "./components/machineHistory";
 
 class App extends Component {
   state = {};
@@ -52,9 +57,17 @@ class App extends Component {
             <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
             <Route path="/employee-add" element={<EmployeeAdd />} />
             <Route path="/report" element={<Report />} />
-            <Route path="/employee-edit" element={<EmployeeEdit />} />
-            <Route path="/repairer" element={<Repairer />} />
-            <Route path="/repair" element={<Repair />} />
+            <Route path="/employee-edit/:empId" element={<EmployeeEdit />} />
+            <Route path="/pcb-repairer" element={<PcbRepairerForm />} />
+            <Route path="/pcb-repair" element={<PcbRepairForm />} />
+            <Route path="/machine" element={<MachineForm />} />
+            <Route path="/machine-repair" element={<MachineRepairForm />} />
+            <Route path="/machine-repairer" element={<MachineRepairerForm />} />
+            <Route path="/machine-dashboard" element={<MachineDashborad />} />
+            <Route
+              path="/machine-history/:machineId"
+              element={<MachineHistory />}
+            />
           </Routes>
         </main>
       </React.Fragment>

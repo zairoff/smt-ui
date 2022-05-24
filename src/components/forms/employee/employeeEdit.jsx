@@ -2,20 +2,21 @@ import React from "react";
 import Form from "../form";
 import ReactLoading from "react-loading";
 import Department from "../../common/department";
-import { getDepartmentByHierarchyId } from "../../../services/departmentService";
 import { toast } from "react-toastify";
-import { addEmployee } from "../../../services/employeeService";
-import { addFile } from "../../../services/fileService";
+import { updateEmployee } from "../../../services/employeeService";
+import { useParams, useLocation } from "react-router-dom";
 import config from "../../../config.json";
+import { addFile } from "../../../services/fileService";
+import { getDepartmentByHierarchyId } from "../../../services/departmentService";
 
-class EmployeeAdd extends Form {
+class EmployeeEdit extends Form {
   inputFile = React.createRef();
+
   state = {
     loading: false,
     imageFileName: "",
     fields: {
       name: "",
-      passport: "",
       department: "",
       position: "",
       birthday: "",
@@ -24,14 +25,33 @@ class EmployeeAdd extends Form {
       details: "",
     },
     departmentId: "",
+    employeeId: "",
     errors: {},
     departments: [],
   };
 
   async componentDidMount() {
+    const { data } = this.props.location.state;
+    const { id, fullName, address, phone, details, imageUrl } = data;
+
+    const fields = {
+      name: fullName,
+      address,
+      phone,
+      details,
+      department: "",
+      position: "",
+      birthday: "",
+    };
+
     try {
       const { data: departments } = await getDepartmentByHierarchyId("/");
-      this.setState({ departments });
+      this.setState({
+        departments,
+        fields,
+        imageFileName: imageUrl,
+        employeeId: id,
+      });
     } catch (ex) {
       toast.error(ex.response.data.message);
     } finally {
@@ -76,29 +96,23 @@ class EmployeeAdd extends Form {
 
   doSubmit = async () => {
     const { imageFileName, departmentId, fields } = this.state;
-    const { name, birthday, phone, address, details, passport } = fields;
-
-    if (!imageFileName) {
-      toast.warning("Choose image!");
-      return;
-    }
+    const { name, birthday, phone, address, details } = fields;
 
     const employee = {
-      passport,
+      imagePath: imageFileName,
       departmentId,
       FullName: name,
       birthday,
       phone,
       address,
       details,
-      ImagePath: imageFileName,
-      IsActive: true,
+      isActive: true,
     };
 
     this.setState({ loading: true });
 
     try {
-      await addEmployee(employee);
+      await updateEmployee(this.props.params.empId, employee);
       toast.info("Success!");
     } catch (ex) {
       toast.error(ex.response.data.message);
@@ -113,7 +127,6 @@ class EmployeeAdd extends Form {
           details: "",
           department: "",
           position: "",
-          passport: "",
           imageFileName: "",
         },
       });
@@ -132,24 +145,22 @@ class EmployeeAdd extends Form {
           <ReactLoading className="loading" type="spin" color="blue" />
         )}
         <div className="col mt-4">
-          <div className="col-5 mt-4">
-            <input
-              style={{ display: "none" }}
-              // accept=".zip,.rar"
-              ref={this.inputFile}
-              onChange={this.handleFileUpload}
-              type="file"
-            />
-            <img
-              src={
-                imageFileName
-                  ? config.fileUrl + imageFileName
-                  : require("../../../assets/images/staff.jpg")
-              }
-              style={{ height: "200px", width: "200px", objectFit: "cover" }}
-              onClick={this.handleImageClick}
-            />
-          </div>
+          <input
+            style={{ display: "none" }}
+            // accept=".zip,.rar"
+            ref={this.inputFile}
+            onChange={this.handleFileUpload}
+            type="file"
+          />
+          <img
+            src={
+              imageFileName
+                ? config.fileUrl + imageFileName
+                : require("../../../assets/images/staff.jpg")
+            }
+            style={{ height: "200px", width: "200px", objectFit: "cover" }}
+            onClick={this.handleImageClick}
+          />
         </div>
         <div className="col">
           {this.renderInput(
@@ -159,15 +170,6 @@ class EmployeeAdd extends Form {
             fields.name,
             this.handleInputChange,
             errors.name,
-            true
-          )}
-          {this.renderInput(
-            "passport",
-            "Passport",
-            "",
-            fields.passport,
-            this.handleInputChange,
-            errors.passport,
             true
           )}
           {this.renderInput(
@@ -240,4 +242,6 @@ class EmployeeAdd extends Form {
   }
 }
 
-export default EmployeeAdd;
+export default () => (
+  <EmployeeEdit params={useParams()} location={useLocation()} />
+);

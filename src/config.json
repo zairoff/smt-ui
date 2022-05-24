@@ -1,4 +1,4 @@
 {
   "apiUrl": "http://localhost:35905/api/",
-  "fileUrl": "http://localhost:35905"
+  "fileUrl": "http://localhost:35905/images/"
 }
