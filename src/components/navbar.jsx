@@ -75,8 +75,8 @@ const NavBar = ({ user }) => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/brand" className="dropdown-item">
-                    Report-Volnovoy
+                  <NavLink to="/pcb-report" className="dropdown-item">
+                    PCB-Report
                   </NavLink>
                 </li>
               </ul>

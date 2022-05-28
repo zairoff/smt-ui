@@ -33,7 +33,7 @@ class MachineDashborad extends Component {
         {this.state.loading && (
           <ReactLoading className="loading" type="spin" color="blue" />
         )}
-        <div className="d-flex flex-wrap">
+        <div className="d-flex flex-wrap mt-4">
           {this.state.data.map((d) => (
             <MachineCard
               key={d.id}

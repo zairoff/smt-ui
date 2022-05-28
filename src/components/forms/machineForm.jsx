@@ -11,6 +11,8 @@ import {
   getMachines,
 } from "../../services/machineService";
 import MachineTable from "../tables/machineTable";
+import { addFile } from "../../services/fileService";
+import config from "../../config.json";
 
 class MachineForm extends Form {
   inputFile = React.createRef();
@@ -23,7 +25,7 @@ class MachineForm extends Form {
     data: [],
     errors: {},
     loading: true,
-    image: null,
+    imageFileName: "",
   };
 
   async componentDidMount() {
@@ -38,19 +40,23 @@ class MachineForm extends Form {
   }
 
   doSubmit = async () => {
-    const { data, fields, image } = this.state;
-    if (!image) {
+    const { data, fields, imageFileName } = this.state;
+    if (!imageFileName) {
       toast.warning("Please upload image!");
       return;
     }
     this.setState({ loading: true });
     try {
-      const formData = new FormData();
-      formData.append("name", fields.machine);
-      formData.append("file", image);
-      const { data: result } = await addMachine(formData);
+      const { data: result } = await addMachine({
+        name: fields.machine,
+        imageUrl: imageFileName,
+      });
       const newData = [...data, result];
-      this.setState({ data: newData, fields: { machine: "", image: null } });
+      this.setState({
+        data: newData,
+        fields: { machine: "" },
+        imageFileName: "",
+      });
     } catch (ex) {
       this.catchExceptionMessage(ex, "machine");
     } finally {
@@ -90,17 +96,21 @@ class MachineForm extends Form {
     this.setState({ currentPage: page });
   };
 
-  handleFileUpload = (e) => {
+  handleFileUpload = async (e) => {
     const { files } = e.target;
     if (files && files.length) {
-      const filename = files[0].name;
-
-      var parts = filename.split(".");
-      const fileType = parts[parts.length - 1];
-      console.log("fileType", fileType); //ex: zip, rar, jpg, svg etc.
-
-      //setImage(files[0]);
-      this.setState({ image: files[0] });
+      try {
+        this.setState({ loading: true });
+        const formData = new FormData();
+        formData.append("file", files[0]);
+        const { data } = await addFile(formData);
+        this.setState({ imageFileName: data });
+      } catch (ex) {
+        toast.error(ex.response.data.message);
+        this.setState({ imageFileName: "" });
+      } finally {
+        this.setState({ loading: false });
+      }
     }
   };
 
@@ -117,7 +127,7 @@ class MachineForm extends Form {
       loading,
       fields,
       errors,
-      image,
+      imageFileName,
     } = this.state;
 
     const sortedRows = _.orderBy(
@@ -156,7 +166,11 @@ class MachineForm extends Form {
                 type="file"
               />
               <img
-                src={image ? URL.createObjectURL(image) : null}
+                src={
+                  imageFileName
+                    ? config.fileUrl + imageFileName
+                    : require("../../assets/images/machine.jpg")
+                }
                 style={{ height: "200px", width: "100%", objectFit: "cover" }}
                 onClick={this.handleImageClick}
               />

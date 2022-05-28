@@ -26,6 +26,7 @@ import MachineRepairerForm from "./components/forms/machineRepairerForm";
 import Card from "./components/common/card";
 import MachineDashborad from "./components/machineDashboard";
 import MachineHistory from "./components/machineHistory";
+import PcbReport from "./components/reports/pcbReport";
 
 class App extends Component {
   state = {};
@@ -42,7 +43,7 @@ class App extends Component {
       <React.Fragment>
         <ToastContainer />
         <NavBar user={this.state.user} />
-        <main className="container">
+        <main className="container ">
           <Routes>
             <Route path="/product" element={<ProductForm />} />
             <Route path="/brand" element={<BrandForm />} />
@@ -64,6 +65,7 @@ class App extends Component {
             <Route path="/machine-repair" element={<MachineRepairForm />} />
             <Route path="/machine-repairer" element={<MachineRepairerForm />} />
             <Route path="/machine-dashboard" element={<MachineDashborad />} />
+            <Route path="/pcb-report" element={<PcbReport />} />
             <Route
               path="/machine-history/:machineId"
               element={<MachineHistory />}
