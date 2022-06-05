@@ -24,52 +24,20 @@ import { getLines } from "../../services/lineService";
 import { getEmployeeByDepartmentId } from "../../services/employeeService";
 import { getDepartments } from "../../services/departmentService";
 import config from "../../config.json";
+import PcbCard from "./pcbCard";
 
 const fileUrl = config.fileUrl;
 
-const Handle = sortableHandle(({ position }) => <h1>{position}</h1>);
-
 const SortableItem = SortableElement(
-  ({
-    name,
-    employeeId,
-    position,
-    imageUrl,
-    count,
-    shouldUseDragHandle,
-    onClick,
-  }) => (
-    <div
-      className="card m-4"
-      style={{ width: "250px" }}
-      onClick={() => onClick({ employeeId, position })}
-    >
-      <div className="row">
-        <div className="col-sm-5">
-          <img
-            className="card-img"
-            src={fileUrl + imageUrl}
-            style={{ height: "100%", objectFit: "cover" }}
-          />
-        </div>
-        <div className="col-sm-7">
-          <h6 className="card-title text-truncate p-2">{name}</h6>
-
-          <div className="card-body d-flex align-items-center justify-content-center">
-            {shouldUseDragHandle && <Handle position={position} />}
-            <span
-              className={
-                count === 0
-                  ? "d-none"
-                  : "position-absolute top-0 start-100 p-2 translate-middle badge bg-danger"
-              }
-            >
-              {count}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+  ({ name, employeeId, position, count, shouldUseDragHandle, onClick }) => (
+    <PcbCard
+      name={name}
+      employeeId={employeeId}
+      position={position}
+      count={count}
+      shouldUseDragHandle={shouldUseDragHandle}
+      onClick={onClick}
+    />
   )
 );
 
@@ -181,6 +149,7 @@ class PcbReport extends Form {
           this.setState({
             selectedModel: id,
             lines,
+            reports: [],
             loading: false,
           });
           break;
@@ -193,7 +162,7 @@ class PcbReport extends Form {
             const { data: lineDefects } = await getLineDefectByLineId(id);
             const defects = lineDefects.map((ld) => ld.defect);
 
-            const { data } = await getPcbReportsByModelLineAndDate(
+            const { data: reports } = await getPcbReportsByModelLineAndDate(
               selectedModel,
               id,
               new Date().toLocaleString() + ""
@@ -201,7 +170,7 @@ class PcbReport extends Form {
             this.setState({
               defects,
               selectedLine: id,
-              data,
+              reports,
               loading: false,
             });
           }

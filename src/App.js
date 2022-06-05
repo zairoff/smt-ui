@@ -27,6 +27,8 @@ import Card from "./components/common/card";
 import MachineDashborad from "./components/machineDashboard";
 import MachineHistory from "./components/machineHistory";
 import PcbReport from "./components/reports/pcbReport";
+import PcbCard from "./components/reports/pcbCard";
+import StaticsForm from "./components/statics/staticsForm";
 
 class App extends Component {
   state = {};
@@ -66,6 +68,7 @@ class App extends Component {
             <Route path="/machine-repairer" element={<MachineRepairerForm />} />
             <Route path="/machine-dashboard" element={<MachineDashborad />} />
             <Route path="/pcb-report" element={<PcbReport />} />
+            <Route path="/statics" element={<StaticsForm />} />
             <Route
               path="/machine-history/:machineId"
               element={<MachineHistory />}

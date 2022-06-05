@@ -57,7 +57,8 @@ class MachineRepairerForm extends Form {
     this.setState({ loading: true });
     try {
       const { data: repairers } = await getEmployeeByDepartmentId(
-        selected.departmentId
+        selected.departmentId,
+        true
       );
       this.setState({ repairers });
     } catch (ex) {

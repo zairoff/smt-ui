@@ -86,7 +86,15 @@ class MachineRepairForm extends Form {
         notificationDate,
         createdDate,
       });
-      this.setState({ data: [...data, machineRepair] });
+      this.setState({
+        data: [...data, machineRepair],
+        fields: {
+          issue: "",
+          action: "",
+          notificationDate: "",
+          createdDate: "",
+        },
+      });
     } catch (ex) {
       console.log("ex:", ex.response);
       toast.error(ex.response.data.message);

@@ -32,6 +32,25 @@ export function getReportByModelIdAndLineId(modelId, lineId, date) {
   return http.get(query);
 }
 
+export function getReportsBy(productid, brandid, modelId, lineId, from, to) {
+  const query = endPoint.concat(
+    "/GetBy?productId=" +
+      productid +
+      "&brandId=" +
+      brandid +
+      "&modelId=" +
+      modelId +
+      "&lineId=" +
+      lineId +
+      "&from=" +
+      from +
+      "&to=" +
+      to
+  );
+  console.log(query);
+  return http.get(query);
+}
+
 export function addReport(report) {
   return http.post(endPoint, report);
 }
