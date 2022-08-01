@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "./components/navbar";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ProductForm from "./components/forms/productForm";
 import ModelForm from "./components/forms/modelForm";
 import BrandForm from "./components/forms/brandForm";
@@ -29,6 +29,8 @@ import MachineHistory from "./components/machineHistory";
 import PcbReport from "./components/reports/pcbReport";
 import PcbCard from "./components/reports/pcbCard";
 import StaticsForm from "./components/statics/staticsForm";
+import Logout from "./components/forms/logout";
+import FtqReport from "./components/reports/ftqReport";
 
 class App extends Component {
   state = {};
@@ -40,35 +42,56 @@ class App extends Component {
       this.setState({ user });
     } catch (ex) {}
   }
+
   render() {
+    const { user } = this.state;
     return (
       <React.Fragment>
         <ToastContainer />
-        <NavBar user={this.state.user} />
+        <NavBar user={user} />
         <main className="container ">
           <Routes>
-            <Route path="/product" element={<ProductForm />} />
-            <Route path="/brand" element={<BrandForm />} />
-            <Route path="/productBrand" element={<ProductBrandForm />} />
-            <Route path="/model" element={<ModelForm />} />
+            {user ? (
+              <>
+                <Route path="/product" element={<ProductForm />} />
+                <Route path="/brand" element={<BrandForm />} />
+                <Route path="/productBrand" element={<ProductBrandForm />} />
+                <Route path="/model" element={<ModelForm />} />
+                <Route path="/defect" element={<DefectForm />} />
+                <Route path="/line" element={<LineForm />} />
+                <Route path="/lineDefect" element={<LineDefectForm />} />
+                <Route path="/department" element={<DepartmentForm />} />
+                <Route
+                  path="/employee-dashboard"
+                  element={<EmployeeDashboard />}
+                />
+                <Route path="/employee-add" element={<EmployeeAdd />} />
+                <Route
+                  path="/employee-edit/:empId"
+                  element={<EmployeeEdit />}
+                />
+                <Route path="/pcb-repairer" element={<PcbRepairerForm />} />
+                <Route
+                  path="/machine-repairer"
+                  element={<MachineRepairerForm />}
+                />
+                <Route path="/machine" element={<MachineForm />} />
+
+                <Route path="/logout" element={<Logout />} />
+              </>
+            ) : (
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            )}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/defect" element={<DefectForm />} />
-            <Route path="/line" element={<LineForm />} />
-            <Route path="/lineDefect" element={<LineDefectForm />} />
-            <Route path="/department" element={<DepartmentForm />} />
-            <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
-            <Route path="/employee-add" element={<EmployeeAdd />} />
             <Route path="/report" element={<Report />} />
-            <Route path="/employee-edit/:empId" element={<EmployeeEdit />} />
-            <Route path="/pcb-repairer" element={<PcbRepairerForm />} />
             <Route path="/pcb-repair" element={<PcbRepairForm />} />
-            <Route path="/machine" element={<MachineForm />} />
             <Route path="/machine-repair" element={<MachineRepairForm />} />
-            <Route path="/machine-repairer" element={<MachineRepairerForm />} />
             <Route path="/machine-dashboard" element={<MachineDashborad />} />
             <Route path="/pcb-report" element={<PcbReport />} />
             <Route path="/statics" element={<StaticsForm />} />
+            <Route path="/dashboard" element={<StaticsForm />} />
+            <Route path="/ftq" element={<FtqReport />} />
             <Route
               path="/machine-history/:machineId"
               element={<MachineHistory />}

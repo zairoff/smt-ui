@@ -30,7 +30,7 @@ class ModelForm extends Form {
     selectedBrand: "",
     currentPage: 1,
     selectedItem: { id: "", value: "" },
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -108,7 +108,7 @@ class ModelForm extends Form {
         productBrandId: productBrand.id,
         name: fields.model,
       });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData, loading: false, fields: { model: "" } });
     } catch (ex) {
       this.setState({ loading: false });

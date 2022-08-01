@@ -22,7 +22,7 @@ class ProductBrandForm extends Form {
     fields: { products: [], brands: [] },
     currentPage: 1,
     selectedItem: { product: "", brand: "" },
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -50,7 +50,7 @@ class ProductBrandForm extends Form {
         ProductId: selectedItem.product,
         BrandId: selectedItem.brand,
       });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData });
     } catch (ex) {
       toast.error(ex.response.data.message);

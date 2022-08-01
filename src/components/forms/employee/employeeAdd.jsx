@@ -15,11 +15,8 @@ class EmployeeAdd extends Form {
     imageFileName: "",
     fields: {
       name: "",
-      passport: "",
       department: "",
       position: "",
-      birthday: "",
-      address: "",
       phone: "",
       details: "",
     },
@@ -76,7 +73,7 @@ class EmployeeAdd extends Form {
 
   doSubmit = async () => {
     const { imageFileName, departmentId, fields } = this.state;
-    const { name, birthday, phone, address, details, passport } = fields;
+    const { name, phone, details } = fields;
 
     if (!imageFileName) {
       toast.warning("Choose image!");
@@ -84,12 +81,9 @@ class EmployeeAdd extends Form {
     }
 
     const employee = {
-      passport,
       departmentId,
       FullName: name,
-      birthday,
       phone,
-      address,
       details,
       ImagePath: imageFileName,
       IsActive: true,
@@ -162,15 +156,6 @@ class EmployeeAdd extends Form {
             true
           )}
           {this.renderInput(
-            "passport",
-            "Passport",
-            "",
-            fields.passport,
-            this.handleInputChange,
-            errors.passport,
-            true
-          )}
-          {this.renderInput(
             "department",
             "Department",
             "",
@@ -186,25 +171,6 @@ class EmployeeAdd extends Form {
             fields.position,
             this.handleInputChange,
             errors.position,
-            true
-          )}
-          {this.renderInput(
-            "birthday",
-            "Birthday",
-            "",
-            fields.birthday,
-            this.handleInputChange,
-            errors.birthday,
-            true,
-            "date"
-          )}
-          {this.renderInput(
-            "address",
-            "Address",
-            "",
-            fields.address,
-            this.handleInputChange,
-            errors.address,
             true
           )}
           {this.renderInput(

@@ -12,6 +12,7 @@ const ListGroup = ({
   const classNameList =
     "list-group-item d-flex justify-content-between align-items-center";
   const classNameBadge = "badge rounded-pill";
+
   return (
     <ul className="list-group">
       {items.map((item) => (
@@ -19,7 +20,9 @@ const ListGroup = ({
           onClick={() => onItemSelect(item)}
           key={item[valueProperty]}
           className={
-            item === selectedItem ? classNameList + " active" : classNameList
+            item[valueProperty] === selectedItem[valueProperty]
+              ? classNameList + " active"
+              : classNameList
           }
         >
           {item[textProperty]}

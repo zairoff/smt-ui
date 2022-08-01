@@ -21,7 +21,7 @@ class MachineForm extends Form {
     sortColumn: { path: "", order: "asc" },
     fields: { machine: "" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -51,7 +51,7 @@ class MachineForm extends Form {
         name: fields.machine,
         imageUrl: imageFileName,
       });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({
         data: newData,
         fields: { machine: "" },

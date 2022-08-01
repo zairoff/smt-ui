@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import Table from "../common/table";
+import config from "../../config.json";
+
+const fileUrl = config.fileUrl;
 
 class MachineRepairerTable extends Component {
   columns = [
+    {
+      path: "image",
+      content: (machinerepairer) => (
+        <img
+          src={fileUrl + machinerepairer.employee.imageUrl}
+          className="rounded-circle"
+          style={{ height: "65px", width: "65px", objectFit: "cover" }}
+        ></img>
+      ),
+    },
     { path: "employee.fullName", label: "" },
-    { path: "employee.departmentName", label: "" },
-    { path: "employee.position", label: "" },
     {
       path: "delete",
       content: (repairer) => (

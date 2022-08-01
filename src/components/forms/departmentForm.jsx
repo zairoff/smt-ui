@@ -22,7 +22,6 @@ class DepartmentForm extends Form {
   async componentDidMount() {
     try {
       const { data } = await getDepartmentByHierarchyId("/");
-      console.log("daaa", data);
       this.setState({ data });
     } catch (ex) {
       toast.error(ex.response.data.message);

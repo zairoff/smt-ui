@@ -18,7 +18,7 @@ class PcbRepairerForm extends Form {
   state = {
     sortColumn: { path: "", order: "asc" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     departments: [],
     data: [],
     repairers: [],
@@ -57,7 +57,8 @@ class PcbRepairerForm extends Form {
     this.setState({ loading: true });
     try {
       const { data: repairers } = await getEmployeeByDepartmentId(
-        selected.departmentId
+        selected.departmentId,
+        true
       );
       this.setState({ repairers });
     } catch (ex) {
@@ -77,7 +78,7 @@ class PcbRepairerForm extends Form {
       const { data: repairer } = await addPcbRepairer({
         employeeid: employeeId,
       });
-      this.setState({ data: [...data, repairer] });
+      this.setState({ data: [repairer, ...data] });
     } catch (ex) {
       toast.error(ex.response.data.message);
     } finally {

@@ -1,7 +1,7 @@
 import config from "../config.json";
 import http from "./httpService";
 
-const endPoint = config.apiUrl + "pcbrepair";
+const endPoint = config.apiUrl + "repair";
 
 function pcbRepairUrl(id) {
   return `${endPoint}/${id}`;

@@ -23,7 +23,7 @@ class LineDefectForm extends Form {
     fields: { lines: [], defects: [] },
     currentPage: 1,
     selectedItem: { line: "", defect: "" },
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -51,7 +51,7 @@ class LineDefectForm extends Form {
         lineId: selectedItem.line,
         DefectId: selectedItem.defect,
       });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData });
     } catch (ex) {
       toast.error(ex.response.data.message);

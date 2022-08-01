@@ -22,3 +22,8 @@ export function getByLine(from, to) {
   const query = endPoint + "/ByLine?from=" + from + "&to=" + to;
   return http.get(query);
 }
+
+export function getByDefect(from, to) {
+  const query = endPoint + "/ByDefect?from=" + from + "&to=" + to;
+  return http.get(query);
+}

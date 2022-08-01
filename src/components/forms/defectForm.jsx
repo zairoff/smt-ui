@@ -18,7 +18,7 @@ class DefectForm extends Form {
     sortColumn: { path: "", order: "asc" },
     fields: { defect: "" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -40,7 +40,7 @@ class DefectForm extends Form {
     this.setState({ loading: true });
     try {
       const { data: result } = await addDefect({ name: fields.defect });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData, fields: { defect: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "defect");

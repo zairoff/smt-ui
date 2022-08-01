@@ -29,7 +29,7 @@ class Register extends Form {
       const user = { username: username, password: password };
       const { data } = await loginUser(user);
       localStorage.setItem("token", data.token);
-      window.location = "/";
+      window.location = "/dashboard";
     } catch (ex) {
       this.catchExceptionMessage(ex, "username");
     } finally {

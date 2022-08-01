@@ -18,7 +18,7 @@ class MachineRepairerForm extends Form {
   state = {
     sortColumn: { path: "", order: "asc" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     departments: [],
     data: [],
     repairers: [],
@@ -78,7 +78,7 @@ class MachineRepairerForm extends Form {
       const { data: repairer } = await addMachineRepairer({
         employeeid: employeeId,
       });
-      this.setState({ data: [...data, repairer] });
+      this.setState({ data: [repairer, ...data] });
     } catch (ex) {
       toast.error(ex.response.data.message);
     } finally {

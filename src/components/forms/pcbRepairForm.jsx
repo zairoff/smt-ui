@@ -23,7 +23,7 @@ class PcbRepairForm extends Form {
     condition: "",
     date: "",
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     repairers: [],
     errors: {},
@@ -88,7 +88,7 @@ class PcbRepairForm extends Form {
       });
 
       this.setState({
-        data: [...this.state.data, repair],
+        data: [repair, ...this.state.data],
         fields: { barcode: "", action: "" },
         model: "",
         line: "",

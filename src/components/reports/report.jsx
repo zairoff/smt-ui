@@ -37,7 +37,7 @@ class Report extends Form {
     loading: true,
     sortColumn: { path: "", order: "asc" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
   };
 
   componentDidUpdate() {
@@ -179,6 +179,7 @@ class Report extends Form {
         lineId,
         new Date().toLocaleString() + ""
       );
+      console.log("ddddddd", data);
       this.setState({ data, fields: { barcode: "" } });
     } catch (ex) {
       this.setState({ data });

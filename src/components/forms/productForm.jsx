@@ -17,7 +17,7 @@ class ProductForm extends Form {
     sortColumn: { path: "", order: "asc" },
     fields: { product: "" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -47,7 +47,7 @@ class ProductForm extends Form {
     this.setState({ loading: true });
     try {
       const { data: result } = await addProduct({ name: fields.product });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData, fields: { product: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "product");

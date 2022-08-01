@@ -13,7 +13,7 @@ class BrandForm extends Form {
     sortColumn: { path: "", order: "asc" },
     fields: { brand: "" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -35,7 +35,7 @@ class BrandForm extends Form {
     this.setState({ loading: true });
     try {
       const { data: result } = await addBrand({ name: fields.brand });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData, fields: { brand: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "brand");

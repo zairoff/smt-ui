@@ -2,7 +2,6 @@ import React from "react";
 import { CSVLink } from "react-csv";
 import { toast } from "react-toastify";
 import { getBrands } from "../../services/brandService";
-import { getLineDefectByLineId } from "../../services/lineDefectService";
 import { getLines } from "../../services/lineService";
 import {
   getModelByProductBrandId,
@@ -10,9 +9,10 @@ import {
 } from "../../services/modelService";
 import { getProductBrandByProductId } from "../../services/productBrandService";
 import { getProducts } from "../../services/productService";
-import { getReports, getReportsBy } from "../../services/reportService";
+import { getReportsBy } from "../../services/reportService";
 import {
   getByBrand,
+  getByDefect,
   getByLine,
   getByModel,
   getByProduct,
@@ -20,6 +20,7 @@ import {
 import Form from "../forms/form";
 import StaticsGroupedTable from "../tables/staticsGroupedTable";
 import StaticsTable from "../tables/staticsTable";
+import ReactLoading from "react-loading";
 
 class StaticsForm extends Form {
   state = {
@@ -39,6 +40,7 @@ class StaticsForm extends Form {
       { id: 3, name: "Brand" },
       { id: 4, name: "Model" },
       { id: 5, name: "Line" },
+      { id: 6, name: "Defect" },
     ],
     sort: false,
     sortColumn: { path: "", order: "asc" },
@@ -192,6 +194,15 @@ class StaticsForm extends Form {
           this.setState({ reports, loading: false, isFiltered: true });
           break;
         }
+
+        case "6": {
+          const { data: reports } = await getByDefect(from, to);
+          this.setState({ reports, loading: false, isFiltered: true });
+          break;
+        }
+        default:
+          this.setState({ loading: false });
+          break;
       }
     } catch (ex) {
       toast.error(ex.message);
@@ -238,6 +249,7 @@ class StaticsForm extends Form {
       sortColumn,
       fields,
       isFiltered,
+      loading,
     } = this.state;
 
     const excel = isFiltered
@@ -254,6 +266,9 @@ class StaticsForm extends Form {
     return (
       <>
         <form className="border p-4 mt-2 mb-4" onSubmit={this.handleSubmit}>
+          {loading && (
+            <ReactLoading className="loading" type="spin" color="blue" />
+          )}
           <div className="row">
             <div className="col">
               {this.renderSelect(

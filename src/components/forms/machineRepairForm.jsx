@@ -21,7 +21,7 @@ class MachineRepairForm extends Form {
     sortColumn: { path: "", order: "asc" },
     fields: { issue: "", action: "", notificationDate: "", createdDate: "" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     machines: [],
     data: [],
     repairers: [],
@@ -87,7 +87,7 @@ class MachineRepairForm extends Form {
         createdDate,
       });
       this.setState({
-        data: [...data, machineRepair],
+        data: [machineRepair, ...data],
         fields: {
           issue: "",
           action: "",

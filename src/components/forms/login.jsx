@@ -1,5 +1,3 @@
-import { wait } from "@testing-library/user-event/dist/utils";
-import { values } from "lodash";
 import React from "react";
 import { loginUser } from "../../services/userService";
 import ReactLoading from "react-loading";
@@ -18,7 +16,7 @@ class Login extends Form {
     try {
       const { data } = await loginUser(user);
       localStorage.setItem("token", data.token);
-      window.location = "/";
+      window.location.href = "./dashboard";
     } catch (ex) {
       this.catchExceptionMessage(ex, "username");
     } finally {

@@ -6,7 +6,7 @@ const NavBar = ({ user }) => {
     <nav className="navbar navbar-expand-md navbar-light bg-light">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          {user ? user.username : "Test"}
+          {user ? user.username : "Artel"}
         </Link>
         <button
           className="navbar-toggler ms-auto"
@@ -18,17 +18,6 @@ const NavBar = ({ user }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink to="/" className="nav-link active" aria-current="page">
-                Dashboard
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/" className="nav-link">
-                Plan
-              </NavLink>
-            </li>
-
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -37,26 +26,52 @@ const NavBar = ({ user }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Management
+                Main
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <NavLink to="/department" className="dropdown-item">
-                    Department
+                  <NavLink to="/dashboard" className="dropdown-item">
+                    Dashboard
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/employee-dashboard" className="dropdown-item">
-                    Employee-dashboard
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/employee-add" className="dropdown-item">
-                    Employee-add
+                  <NavLink to="/statics" className="dropdown-item">
+                    Statics
                   </NavLink>
                 </li>
               </ul>
             </li>
+
+            {user && (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Management
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <NavLink to="/department" className="dropdown-item">
+                      Department
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/employee-dashboard" className="dropdown-item">
+                      Employee-dashboard
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/employee-add" className="dropdown-item">
+                      Employee-add
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+            )}
 
             <li className="nav-item dropdown">
               <a
@@ -93,11 +108,13 @@ const NavBar = ({ user }) => {
                 Repairs
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <NavLink to="/pcb-repairer" className="dropdown-item">
-                    Repairer
-                  </NavLink>
-                </li>
+                {user && (
+                  <li>
+                    <NavLink to="/pcb-repairer" className="dropdown-item">
+                      Repairer
+                    </NavLink>
+                  </li>
+                )}
                 <li>
                   <NavLink to="/pcb-repair" className="dropdown-item">
                     Repair
@@ -122,16 +139,21 @@ const NavBar = ({ user }) => {
                     Dashboard
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/machine" className="dropdown-item">
-                    Machine
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/machine-repairer" className="dropdown-item">
-                    Repairer
-                  </NavLink>
-                </li>
+                {user && (
+                  <>
+                    <li>
+                      <NavLink to="/machine" className="dropdown-item">
+                        Machine
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/machine-repairer" className="dropdown-item">
+                        Repairer
+                      </NavLink>
+                    </li>
+                  </>
+                )}
+
                 <li>
                   <NavLink to="/machine-repair" className="dropdown-item">
                     Repair
@@ -140,61 +162,63 @@ const NavBar = ({ user }) => {
               </ul>
             </li>
 
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Settings
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <NavLink to="/product" className="dropdown-item">
-                    Product
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/brand" className="dropdown-item">
-                    Brand
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/productBrand" className="dropdown-item">
-                    Product-Brand
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/model" className="dropdown-item">
-                    Model
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/defect" className="dropdown-item">
-                    Defect
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/line" className="dropdown-item">
-                    Line
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/lineDefect" className="dropdown-item">
-                    Line-Defect
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
+            {user && (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Settings
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <NavLink to="/product" className="dropdown-item">
+                      Product
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/brand" className="dropdown-item">
+                      Brand
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/productBrand" className="dropdown-item">
+                      Product-Brand
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/model" className="dropdown-item">
+                      Model
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/defect" className="dropdown-item">
+                      Defect
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/line" className="dropdown-item">
+                      Line
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/lineDefect" className="dropdown-item">
+                      Line-Defect
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+            )}
           </ul>
           <ul className="navbar-nav ms-auto">
             {!user && (
               <React.Fragment>
-                <NavLink to="/register" className="nav-item nav-link">
+                {/*<NavLink to="/register" className="nav-item nav-link">
                   Register
-                </NavLink>
+            </NavLink>*/}
                 <NavLink to="/login" className="nav-item nav-link">
                   Login
                 </NavLink>
@@ -202,7 +226,7 @@ const NavBar = ({ user }) => {
             )}
             {user && (
               <React.Fragment>
-                <NavLink to="/" className="nav-item nav-link">
+                <NavLink to="/logout" className="nav-item nav-link">
                   Logout
                 </NavLink>
               </React.Fragment>

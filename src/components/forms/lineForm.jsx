@@ -15,7 +15,7 @@ class LineForm extends Form {
     sortColumn: { path: "", order: "asc" },
     fields: { line: "" },
     currentPage: 1,
-    pageSize: 7,
+    pageSize: 15,
     data: [],
     errors: {},
     loading: true,
@@ -37,7 +37,7 @@ class LineForm extends Form {
     this.setState({ loading: true });
     try {
       const { data: result } = await addLine({ name: fields.line });
-      const newData = [...data, result];
+      const newData = [result, ...data];
       this.setState({ data: newData, fields: { line: "" } });
     } catch (ex) {
       this.catchExceptionMessage(ex, "line");

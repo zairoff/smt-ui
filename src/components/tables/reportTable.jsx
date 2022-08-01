@@ -3,6 +3,7 @@ import Table from "../common/table";
 
 class ReportTable extends Component {
   columns = [
+    { path: "barcode", label: "BARCODE" },
     { path: "model.name", label: "MODEL" },
     { path: "defect.name", label: "DEFECT" },
     {
